@@ -1,0 +1,229 @@
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 807
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Thu, 02 Mar 2023 15:39:33 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '807', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQe2389d3b60971952b94b7c8e33070273', 'Twilio-Request-Duration': '0.231', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+DEBUG:root:Obtaining and printing out city, temperature in kelvin and weather from weathermap api based on zipcode...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 877
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Thu, 02 Mar 2023 15:39:34 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '877', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ10b8e75e24749a60fd313ee393241476', 'Twilio-Request-Duration': '0.206', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 824
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Thu, 02 Mar 2023 15:39:34 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '824', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ17e1d8387f184efda970f50fbed387d0', 'Twilio-Request-Duration': '0.201', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 807
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Thu, 02 Mar 2023 17:35:38 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '807', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ6653433270cc6c1cdba50de150cc4ddf', 'Twilio-Request-Duration': '0.211', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+DEBUG:root:Obtaining and printing out city, temperature in kelvin and weather from weathermap api based on zipcode...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 877
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Thu, 02 Mar 2023 17:35:39 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '877', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ2c0a7f4ec22e5fc87c71a6ce929d54a7', 'Twilio-Request-Duration': '0.215', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 824
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Thu, 02 Mar 2023 17:35:39 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '824', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQfcc9c540e9b77190a7e33111fd124a2a', 'Twilio-Request-Duration': '0.215', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 807
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Sat, 11 Mar 2023 22:57:12 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '807', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ09f34e49298331b50b60c022bee0fcbf', 'Twilio-Request-Duration': '0.236', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+DEBUG:root:Obtaining and printing out city, temperature in kelvin and weather from weathermap api based on zipcode...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 888
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Sat, 11 Mar 2023 22:57:12 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '888', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQddbd0b77e76de21eca650a93eb20c544', 'Twilio-Request-Duration': '0.188', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 823
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Sat, 11 Mar 2023 22:57:12 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '823', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ7c98dca69d3c177cdcec17924729858a', 'Twilio-Request-Duration': '0.218', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 807
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:47:05 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '807', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ6083fc91127f5a9aa190442a48b0811a', 'Twilio-Request-Duration': '0.267', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+DEBUG:root:Obtaining and printing out city, temperature in kelvin and weather from weathermap api based on zipcode...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 877
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:47:05 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '877', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ3a0a43a7dfa721f84c49d7058f5d28d8', 'Twilio-Request-Duration': '0.188', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 824
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:47:06 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '824', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQc2821072df35a894cb704ff856871a68', 'Twilio-Request-Duration': '0.225', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 807
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:49:23 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '807', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ65191b5230f9c50975e8c1709c3fa831', 'Twilio-Request-Duration': '0.171', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 807
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:49:33 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '807', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ20ac9bd230d1713e53fff88eae6550c4', 'Twilio-Request-Duration': '0.178', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+DEBUG:root:Obtaining and printing out city, temperature in kelvin and weather from weathermap api based on zipcode...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 877
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:49:33 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '877', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ72d9011955ee524318b531cd0421b384', 'Twilio-Request-Duration': '0.180', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
+INFO:twilio.http_client:-- BEGIN Twilio API Request --
+INFO:twilio.http_client:POST Request: https://api.twilio.com/2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json
+INFO:twilio.http_client:Headers:
+INFO:twilio.http_client:User-Agent : twilio-python/7.15.4 (Darwin x86_64) Python/3.10.8
+INFO:twilio.http_client:X-Twilio-Client : python-7.15.4
+INFO:twilio.http_client:Accept-Charset : utf-8
+INFO:twilio.http_client:Content-Type : application/x-www-form-urlencoded
+INFO:twilio.http_client:Accept : application/json
+INFO:twilio.http_client:-- END Twilio API Request --
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.twilio.com:443
+DEBUG:urllib3.connectionpool:https://api.twilio.com:443 "POST /2010-04-01/Accounts/ACf56fa67b44f22cb04e464b73b0ac4f78/Messages.json HTTP/1.1" 201 824
+INFO:twilio.http_client:Response Status Code: 201
+INFO:twilio.http_client:Response Headers: {'Date': 'Mon, 13 Mar 2023 14:49:34 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '824', 'Connection': 'keep-alive', 'Twilio-Request-Id': 'RQ48dd3abefe2e8b541be5ec8065bfddd3', 'Twilio-Request-Duration': '0.198', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Accept, Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Idempotency-Key', 'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS', 'Access-Control-Expose-Headers': 'ETag', 'Access-Control-Allow-Credentials': 'true', 'X-Powered-By': 'AT-5000', 'Twilio-Concurrent-Requests': '1', 'X-Shenanigans': 'none', 'X-Home-Region': 'us1', 'X-API-Domain': 'api.twilio.com', 'Strict-Transport-Security': 'max-age=31536000'}
+DEBUG:root:Sending unspecified message to an unspecified phone number (specified when function is called)...
