@@ -66,46 +66,50 @@ class GameControl:
             outfile.write(sf)
 
     def save_data(self):
+        times_checked = 1
         save_name = input("Save name (Data will be saved under this name):\n")
         data = []
         with open('JSON files/SavedCharacterData.json') as outfile:
             data = json.load(outfile)
-        print(data)
-        for d in data:
-            print("Beginning ran")
-            print(data)
-            print(d)
-        for i in range(len(data)):
-            if save_name == d:
-                print("Save name found ran")
-                save_replace = input("There is a previous save with this name, would you like to replace it? "
-                                     "(yes/no)\n")
-                while True:
-                    if save_replace == "yes" or save_replace == "no":
-                        break
+        for num in data:
+            print(f"run {times_checked}")
+            for d in data:
+                for k in d:
+                    print(k)
+                    # if save_name != k:
+                    #     print("Not this dict")
+                    if save_name == k:
+                        print("Save name found ran")
+                        save_replace = input("There is a previous save with this name, would you like to replace it? "
+                                             "(yes/no)\n")
+                        while True:
+                            if save_replace == "yes" or save_replace == "no":
+                                break
+                            else:
+                                save_replace = input("Please input a valid response\n"
+                                                     "Would you like to replace the existing save?\n")
+                        if save_replace == "yes":
+                            for key in d.keys:
+                                if save_name == key:
+                                    key = self.player.__dict__
+                                    with open('JSON files/SavedCharacterData.json', 'w') as json_file:
+                                        json.dump(data, json_file,
+                                                  indent=4,
+                                                  separators=(',', ': '))
+                                    break
+                        else:
+                            self.save_data()
                     else:
-                        save_replace = input("Please input a valid response\n"
-                                             "Would you like to replace the existing save?\n")
-                if save_replace == "yes":
-                    for key in d.keys:
-                        if save_name == key:
-                            key = self.player.__dict__
-                            with open('JSON files/SavedCharacterData.json', 'w') as json_file:
-                                json.dump(data, json_file,
-                                          indent=4,
-                                          separators=(',', ': '))
-                else:
-                    self.save_data()
-            else:
-                print("New save creation ran")
-                data.append({
-                    save_name: self.player.__dict__
-                })
-                with open('JSON files/SavedCharacterData.json', 'w') as json_file:
-                    json.dump(data, json_file,
-                              indent=4,
-                              separators=(',', ': '))
-                break
+                        print("New save creation ran")
+                        data.append({
+                            save_name: self.player.__dict__
+                        })
+                        with open('JSON files/SavedCharacterData.json', 'w') as json_file:
+                            json.dump(data, json_file,
+                                      indent=4,
+                                      separators=(',', ': '))
+                        return
+                    times_checked += 1
 
     # # with open('JSON files/SavedCharacterData.json', 'r') as f:
     # #     info = f.read()
