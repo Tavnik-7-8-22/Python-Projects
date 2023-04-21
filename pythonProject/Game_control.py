@@ -1,4 +1,4 @@
-import Location
+import LocationMoveInGrid
 import Character
 import random
 import json
@@ -169,7 +169,6 @@ class GameControl:
                           "save\nIf you want to see a list of previously created saves, please enter, show previous "
                           "saves")
                     self.load_data()
-
 
     def show_saves(self):
         with open('JSON files/SavedCharacterData.json') as f:
