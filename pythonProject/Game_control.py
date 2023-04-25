@@ -1,15 +1,16 @@
-import LocationMoveInGrid
-import Character
+from LocationMoveWithGrid import Location
+from Character import User
 import random
 import json
+import JSON
 
 
 class GameControl:
     def __init__(self):
         self.rolls = 0
         self.MAX_ROLL = 3
-        self.player = Character.User()
-        self.location = Location.Location()
+        self.player = User()
+        self.location = Location()
         # need instance variables for the player & location & timer (if needed)
 
 # class Dice:
@@ -63,11 +64,14 @@ class GameControl:
             name = input("What shall you be called:\n")
             self.player.change__init__(name=name)
 
-    def make_blank_save(self):
-        data = [{"blank_beginner_save": self.player.__dict__}]
-        sf = json.dumps(data, indent=4, separators=(',', ': '))
-        with open('JSON files/SavedCharacterData.json', "w") as outfile:
-            outfile.write(sf)
+    def check_empty_file(self):
+        with open("JSON files/SavedCharacterData.json", 'r') as read_obj:
+            one_char = read_obj.read(1)
+            if not one_char:
+                data = [{"blank_beginner_save": self.player.__dict__}]
+                sf = json.dumps(data, indent=4, separators=(',', ': '))
+                with open('JSON files/SavedCharacterData.json', "w") as outfile:
+                    outfile.write(sf)
 
     def save_data(self):
         save_name = input("Save name (Data will be saved under this name):\n")
@@ -104,6 +108,7 @@ class GameControl:
                     else:
                         self.save_data()
                 else:
+                    data = []
                     new_file = times_checked - times_run
                     if new_file == 0:
                         print("New save created\n")
@@ -215,7 +220,7 @@ class GameControl:
         self.location.print_location_grid(self.location.grid)
 
     def start_game(self):
-        self.make_blank_save()
+        self.check_empty_file()
         print("Welcome to: \"GAME NAME\"\n", end='To start - ')
         load_ask = input("Do you have a previous saved campaign? (yes/no)\n")
         while True:
