@@ -253,7 +253,7 @@ class Location:
                 data = [{"Save " + str(self.file_saves): self.grid}]
                 self.file_saves += 1
                 sf = json.dumps(data, indent=4, separators=(',', ': '))
-                with open('JSON files/SavedCharacterData.json', "w") as outfile:
+                with open('JSON files/SavedGridData.json', "w") as outfile:
                     outfile.write(sf)
                 print("Created save 0")
             else:
@@ -262,7 +262,7 @@ class Location:
 
     def save_grid(self):
         grid_name = "Save " + str(self.file_saves)
-        info = []
+        data = []
         with open('JSON files/SavedGridData.json') as outfile:
             data = json.load(outfile)
             times_checked = len(data)
@@ -276,9 +276,9 @@ class Location:
                     new_grid = times_checked - times_run
                     if new_grid == 0:
                         print("New grid saved\n")
-                        info.append({grid_name: self.grid})
-                        with open('JSON files/SavedCharacterData.json', 'w') as json_file:
-                            json.dump(info, json_file,
+                        data.append({grid_name: self.grid})
+                        with open('JSON files/SavedGridData.json', 'w') as json_file:
+                            json.dump(data, json_file,
                                       indent=4,
                                       separators=(',', ': '))
                         return
