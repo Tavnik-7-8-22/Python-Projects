@@ -209,16 +209,21 @@ class GameControl:
 
     def start_location(self):
         self.location.get_data()
-        self.location.create_location_grid(3, 3)
+        self.location.create_location_grid(self.location.visibility, self.location)
+        self.location.randomize_grid()
+        self.location.set_location()
+        self.location.location_boarders(5)
+        self.location.check_empty_file()
         self.location.print_location_grid(self.location.grid)
 
     def run_location(self):
         # Dev room entry code is dev-7-8-22
         self.location.player_movement()
-        self.location.update_grid()
-        self.location.create_location_grid(3, 3)
+        self.location.save_grid()
+        self.location.location_boarders(5)
+        self.location.revert_grid()
         self.location.print_location_grid(self.location.grid)
-
+        
     def start_game(self):
         self.check_empty_file()
         print("Welcome to: \"GAME NAME\"\n", end='To start - ')

@@ -9,8 +9,7 @@ class Location:
         self.empty_space = "[ ]"
         self.enemy = "[" + Colors.RED + "E" + Colors.END + "]"
         self.tree = "[" + Colors.GREEN + "T" + Colors.END + "]"
-        self.location_edge_ns = Colors.GREYBG + "[#]" + Colors.END
-        self.location_edge_ew = Colors.GREYBG + "[#]" + Colors.END
+        self.location_edge = Colors.GREYBG + "[#]" + Colors.END
         self.grid = []
         self.location_data = ""
         self.ZO_location = "Forest"
@@ -22,9 +21,8 @@ class Location:
         self.moves_west = 0
         self.moves_south = 0
         self.moves_east = 0
-        self.curr_pos = [self.moves_north, self.moves_east]
+        # self.curr_pos = [self.moves_north, self.moves_east]
         self.boarder_distance = 0
-        self.file_saves = 0
 
     def set_location(self):
         self.grid[len(loc.grid)//2][len(loc.grid)//2] = self.player
@@ -71,8 +69,6 @@ class Location:
     def print_location_grid(self, g):
         for i in range(len(g)):
             for j in range(len(g[i])):
-                if g[i][j] == self.location_edge_ew or g[i][j] == self.location_edge_ns:
-                    print(g[i][j], end=Colors.GREYBG + ' ' + Colors.END)
                 print(g[i][j], end=' ')
             print()
 
@@ -231,27 +227,26 @@ class Location:
             for j in range(len(self.grid[i])):
                 if self.moves_north == boarder_distance:
                     if i == 0:
-                        self.grid[i][j] = self.location_edge_ns
+                        self.grid[i][j] = self.location_edge
                         print("Reached location edge (north)")
                 if self.moves_west == boarder_distance:
                     if j == 0:
-                        self.grid[i][j] = self.location_edge_ew
+                        self.grid[i][j] = self.location_edge
                         print("Reached location edge (west)")
                 if self.moves_south == boarder_distance:
                     if i == len(self.grid)-1:
-                        self.grid[i][j] = self.location_edge_ns
-                        print("Reached location edge (south")
+                        self.grid[i][j] = self.location_edge
+                        print("Reached location edge (south)")
                 if self.moves_east == boarder_distance:
                     if j == len(self.grid)-1:
-                        self.grid[i][j] = self.location_edge_ew
+                        self.grid[i][j] = self.location_edge
                         print("Reached location edge (east)")
 
     def check_empty_file(self):
         with open("JSON files/SavedGridData.json", 'r') as f:
             one_char = f.read(1)
             if not one_char:
-                data = [{"Save " + str(self.file_saves): self.grid}]
-                self.file_saves += 1
+                data = [{"(" + str(self.moves_east) + "," + str(self.moves_north) + ")": self.grid}]
                 sf = json.dumps(data, indent=4, separators=(',', ': '))
                 with open('JSON files/SavedGridData.json', "w") as outfile:
                     outfile.write(sf)
@@ -261,16 +256,16 @@ class Location:
                 self.save_grid()
 
     def save_grid(self):
-        grid_name = "Save " + str(self.file_saves)
+        grid_name = "(" + str(self.moves_east) + "," + str(self.moves_north) + ")"
         data = []
         with open('JSON files/SavedGridData.json') as outfile:
             data = json.load(outfile)
             times_checked = len(data)
             times_run = 1
         for d in data:
-            for k in d:
+            for k, v in d.items():
                 if k == grid_name:
-                    self.grid = k
+                    self.grid = v
                     print("grid loaded")
                 elif grid_name != k:
                     new_grid = times_checked - times_run
@@ -289,9 +284,34 @@ class Location:
     def revert_grid(self):
         with open('JSON files/SavedGridData.json') as f:
             f = json.load(f)
-        if self.update_temp_var == self.location_edge_ew or self.location_edge_ns:
-            if self.moves_east == self.boarder_distance:
-                self.grid = f[self.moves_east][self.moves_north]
+        if self.update_temp_var == self.location_edge:
+            for d in f:
+                for k, v in d.items():
+                    if self.moves_north > self.boarder_distance:
+                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
+                            for data in f:
+                                for key, value in data.items():
+                                    if key == "(" + str(self.moves_east) + "," + str(self.moves_north - 1) + ")":
+                                        self.grid = value
+                                        self.moves_north -= 1
+                    if self.moves_east > self.boarder_distance:
+                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
+                            for key, value in d.items():
+                                if key == "(" + str(self.moves_east - 1) + "," + str(self.moves_north) + ")":
+                                    self.grid = value
+                                    self.moves_east -= 1
+                    if self.moves_south > self.boarder_distance:
+                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
+                            for key, value in d.items():
+                                if key == "(" + str(self.moves_east) + "," + str(self.moves_north + 1) + ")":
+                                    self.grid = value
+                                    self.moves_north += 1
+                    if self.moves_west > self.boarder_distance:
+                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
+                            for key, value in d.items():
+                                if key == "(" + str(self.moves_east + 1) + "," + str(self.moves_north) + ")":
+                                    self.grid = value
+                                    self.moves_east += 1
 
     def move_north(self):
         self.update_grid_north()
@@ -318,12 +338,8 @@ class Location:
         self.moves_east -= 1
 
     def player_movement(self):
-        if self.move_count > 5:
+        if self.move_count == 5:
             self.move_count = 0
-            move = input("What direction would you like to move in?\n(Options: west, north-west, north, north-east, "
-                         "east, south-east, south, south-west)\n")
-            self.move_count += 1
-        elif self.move_count == 5:
             print("What direction would you like to move in?\n(Options: west, north-west, north, north-east, east,"
                   "south-east, south, south-west)")
             move = input("Quick tip! You can save time by just imputing the initials of the direction you want to go in"
@@ -417,14 +433,17 @@ class Location:
 
 loc = Location()
 loc.get_data()
-loc.create_location_grid(3, 3)
+loc.create_location_grid(loc.visibility, loc.visibility)
 loc.randomize_grid()
 loc.set_location()
-loc.location_boarders(5)
 loc.check_empty_file()
+loc.location_boarders(5)
+loc.print_location_grid(loc.grid)
 while True:
+    print(f"Currently at: ({loc.moves_east}, {loc.moves_north})")
     loc.player_movement()
     loc.save_grid()
     loc.location_boarders(5)
     loc.revert_grid()
+    loc.location_boarders(5)
     loc.print_location_grid(loc.grid)
