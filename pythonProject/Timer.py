@@ -18,7 +18,6 @@ class Time:
         """
         self.end_time = self.get_game_time() + seconds
 
-
     def get_time_left(self):
         """
         returns the amount of time left on the timer

@@ -1,0 +1,30 @@
+[
+    {
+        "Tope": {
+            "name": "unknown",
+            "health": 0,
+            "strength": 0,
+            "speed": 0,
+            "xp": 0,
+            "is_alive": true,
+            "MAX_HEALTH": 0,
+            "heritage": "",
+            "inventory": [],
+            "possessive_nickname": "Your",
+            "other_nickname": "You",
+            "attributes": {
+                "name": "unknown",
+                "health": 0,
+                "strength": 0,
+                "speed": 0,
+                "xp": 0,
+                "is_alive": true,
+                "MAX_HEALTH": 0,
+                "heritage": "",
+                "inventory": [],
+                "possessive_nickname": "unknowns",
+                "other_nickname": "unknown"
+            }
+        }
+    }
+]

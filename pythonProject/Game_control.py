@@ -1,8 +1,7 @@
-from LocationMoveWithGrid import Location
+from Location import Location
 from Character import User
 import random
 import json
-import JSON
 
 
 class GameControl:
@@ -209,7 +208,7 @@ class GameControl:
 
     def start_location(self):
         self.location.get_data()
-        self.location.create_location_grid(self.location.visibility, self.location)
+        self.location.create_location_grid(self.location.visibility, self.location.visibility)
         self.location.randomize_grid()
         self.location.set_location()
         self.location.location_boarders(5)
