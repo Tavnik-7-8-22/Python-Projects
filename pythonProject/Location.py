@@ -16,7 +16,7 @@ class Location:
         self.move_count = 5
         self.visibility = 3
         self.update_temp_var = self.empty_space
-        self.underground_entrance = "[" + Colors.GREY + "E" + Colors.END + "]"
+        self.entrance = "[" + Colors.WHITE + "E" + Colors.END + "]"
         self.moves_north = 0
         self.moves_west = 0
         self.moves_south = 0
@@ -102,7 +102,7 @@ class Location:
                     elif random_gen <= 100:
                         random_gen = self.empty_space
                     elif random_gen == 0:
-                        random_gen = self.undergraound_entrance
+                        random_gen = self.entrance
                     self.grid[i][j] = random_gen
 
     def randomize_grid_west(self):
@@ -151,14 +151,14 @@ class Location:
                 if i != 0:
                     if self.grid[i-1][j] == self.player:
                         self.grid[(len(self.grid)//2)+1][len(self.grid)//2] = self.update_temp_var
-                        # print(self.update_temp_var)
-                        # print("Changed to temp var")
-                        if self.update_temp_var == self.enemy:
-                            self.trigger_event
+                        # # print(self.update_temp_var)
+                        # # print("Changed to temp var")
+                        # if self.update_temp_var == self.enemy:
+                        #     self.trigger_event
                     elif self.grid[i][j] == self.player:
                         self.update_temp_var = self.grid[(len(self.grid) // 2) - 1][len(self.grid) // 2]
-                        # print(self.update_temp_var)
-                        # print("Assigned temp var")
+                        # # print(self.update_temp_var)
+                        # # print("Assigned temp var")
                     else:
                         self.grid[i][j] = self.grid[i-1][j]
 
@@ -169,55 +169,55 @@ class Location:
                 if j != 0:
                     if self.grid[i][j-1] == self.player:
                         self.grid[len(self.grid)//2][(len(self.grid)//2)+1] = self.update_temp_var
-                        # print(self.update_temp_var)
-                        # print("Changed to temp var")
-                        if self.update_temp_var == self.enemy:
-                            self.trigger_event
+                        # # print(self.update_temp_var)
+                        # # print("Changed to temp var")
+                        # if self.update_temp_var == self.enemy:
+                        #     self.trigger_event
                     elif self.grid[i][j] == self.player:
                         self.update_temp_var = self.grid[(len(self.grid))//2][(len(self.grid)//2)-1]
-                        # print(self.update_temp_var)
-                        # print("Assigned temp var")
+                        # # print(self.update_temp_var)
+                        # # print("Assigned temp var")
                     else:
                         self.grid[i][j] = self.grid[i][j-1]
 
     def update_grid_south(self):
-        # print(f"{(len(self.grid)//2)+1,(len(self.grid))//2}")
-        # print(f"{self.grid[(len(self.grid)//2)+1][(len(self.grid))//2]}")
+        # # print(f"{(len(self.grid)//2)+1,(len(self.grid))//2}")
+        # # print(f"{self.grid[(len(self.grid)//2)+1][(len(self.grid))//2]}")
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                # print(f"{i, j}")
+                # # print(f"{i, j}")
                 if i != len(self.grid)-1:
                     if self.grid[i+1][j] == self.player:
                         self.grid[(len(self.grid)//2)-1][len(self.grid)//2] = self.update_temp_var
-                        # print(self.update_temp_var)
-                        # print("Changed to temp var")
-                        if self.update_temp_var == self.enemy:
-                            self.trigger_event
+                        # # print(self.update_temp_var)
+                        # # print("Changed to temp var")
+                        # if self.update_temp_var == self.enemy:
+                        #     self.trigger_event
                     elif self.grid[i][j] == self.player:
                         self.update_temp_var = self.grid[(len(self.grid)//2)+1][(len(self.grid))//2]
-                        # print(self.update_temp_var)
-                        # print("Assigned temp var")
+                        # # print(self.update_temp_var)
+                        # # print("Assigned temp var")
                     else:
                         self.grid[i][j] = self.grid[i+1][j]
 
     def update_grid_east(self):
-        # print(f"{(len(self.grid)//2)+1,(len(self.grid))//2}")
-        # print(f"{self.grid[(len(self.grid)//2)+1][(len(self.grid))//2]}")
+        # # print(f"{(len(self.grid)//2)+1,(len(self.grid))//2}")
+        # # print(f"{self.grid[(len(self.grid)//2)+1][(len(self.grid))//2]}")
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                # print(f"{i, j}")
-                # print(temp_var)
+                # # print(f"{i, j}")
+                # # print(temp_var)
                 if j != len(self.grid)-1:
                     if self.grid[i][j+1] == self.player:
                         self.grid[len(self.grid)//2][(len(self.grid)//2)-1] = self.update_temp_var
-                        # print(self.update_temp_var)
-                        # print("Changed to temp var")
-                        if self.update_temp_var == self.enemy:
-                            self.trigger_event
+                        # # print(self.update_temp_var)
+                        # # print("Changed to temp var")
+                        # if self.update_temp_var == self.enemy:
+                        #     self.trigger_event
                     elif self.grid[i][j] == self.player:
                         self.update_temp_var = self.grid[len(self.grid)//2][((len(self.grid))//2)+1]
-                        # print(self.update_temp_var)
-                        # print("Assigned temp var")
+                        # # print(self.update_temp_var)
+                        # # print("Assigned temp var")
                     else:
                         self.grid[i][j] = self.grid[i][j+1]
 
@@ -282,72 +282,40 @@ class Location:
                         pass
 
     def revert_grid(self):
-        with open('JSON files/SavedGridData.json') as f:
-            f = json.load(f)
-        if self.update_temp_var == self.location_edge:
-            for d in f:
-                for k, v in d.items():
-                    if self.moves_north > self.boarder_distance:
-                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
-                            for data in f:
-                                for key, value in data.items():
-                                    if key == "(" + str(self.moves_east) + "," + str(self.moves_north - 1) + ")":
-                                        self.grid = value
-                                        self.moves_north -= 1
-                    if self.moves_east > self.boarder_distance:
-                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
-                            for key, value in d.items():
-                                if key == "(" + str(self.moves_east - 1) + "," + str(self.moves_north) + ")":
-                                    self.grid = value
-                                    self.moves_east -= 1
-                    if self.moves_south > self.boarder_distance:
-                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
-                            for key, value in d.items():
-                                if key == "(" + str(self.moves_east) + "," + str(self.moves_north + 1) + ")":
-                                    self.grid = value
-                                    self.moves_north += 1
-                    if self.moves_west > self.boarder_distance:
-                        if k == "(" + str(self.moves_east) + "," + str(self.moves_north) + ")":
-                            for key, value in d.items():
-                                if key == "(" + str(self.moves_east + 1) + "," + str(self.moves_north) + ")":
-                                    self.grid = value
-                                    self.moves_east += 1
-
-    def move_north(self):
         if self.moves_north >= self.boarder_distance:
             self.moves_north = self.boarder_distance
-        else:
-            self.update_grid_north()
-            self.randomize_grid_north()
-            self.moves_north += 1
-            self.moves_south -= 1
+        if self.moves_east >= self.boarder_distance:
+            self.moves_east = self.boarder_distance
+        if self.moves_south >= self.boarder_distance:
+            self.moves_south = self.boarder_distance
+            self.moves_north = -abs(self.boarder_distance)
+        if self.moves_west >= self.boarder_distance:
+            self.moves_west = self.boarder_distance
+            self.moves_east = -abs(self.boarder_distance)
+
+    def move_north(self):
+        self.update_grid_north()
+        self.randomize_grid_north()
+        self.moves_north += 1
+        self.moves_south -= 1
 
     def move_east(self):
-        if self.moves_east >= self.boarder_distance:
-            self.moves_north = self.boarder_distance
-        else:
-            self.update_grid_east()
-            self.randomize_grid_east()
-            self.moves_east += 1
-            self.moves_west -= 1
+        self.update_grid_east()
+        self.randomize_grid_east()
+        self.moves_east += 1
+        self.moves_west -= 1
 
     def move_south(self):
-        if self.moves_south >= self.boarder_distance:
-            self.moves_north = self.boarder_distance
-        else:
-            self.update_grid_south()
-            self.randomize_grid_south()
-            self.moves_south += 1
-            self.moves_north -= 1
+        self.update_grid_south()
+        self.randomize_grid_south()
+        self.moves_south += 1
+        self.moves_north -= 1
 
     def move_west(self):
-        if self.moves_west >= self.boarder_distance:
-            self.moves_north = self.boarder_distance
-        else:
-            self.update_grid_west()
-            self.randomize_grid_west()
-            self.moves_west += 1
-            self.moves_east -= 1
+        self.update_grid_west()
+        self.randomize_grid_west()
+        self.moves_west += 1
+        self.moves_east -= 1
 
     def player_movement(self):
         if self.move_count == 5:
@@ -434,15 +402,14 @@ class Location:
         # self.curr_pos = previous
         # self.update_grid()
 
-    def trigger_event(self):
-        if self.update_temp_var == self.enemy:
-            pass
-        elif self.update_temp_var == self.tree:
-            pass
-        elif self.update_temp_var == self.underground_entrance:
-            pass
+    def zo_locations(self):
+        if self.update_temp_var == self.entrance:
+            if self.ZO_location == "forest":
+                for i in range(len(self.grid)):
+                    for j in range(len(self.grid[i])):
+                        pass
 
-
+#
 # loc = Location()
 # loc.get_data()
 # loc.create_location_grid(loc.visibility, loc.visibility)
@@ -454,8 +421,8 @@ class Location:
 # while True:
 #     print(f"Currently at: ({loc.moves_east}, {loc.moves_north})")
 #     loc.player_movement()
+#     loc.revert_grid()
 #     loc.save_grid()
 #     loc.location_boarders(5)
-#     loc.revert_grid()
 #     loc.location_boarders(5)
 #     loc.print_location_grid(loc.grid)

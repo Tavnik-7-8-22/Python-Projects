@@ -25,11 +25,12 @@ class GameControl:
         self.player.change__init__(speed=dice_values[4] + dice_values[5])
 
     def ask_roll_again(self):
-        print("Roll for you attributes, your attributes consist of health, strength and speed:\nHealth is how many "
-              "times you can get hit and keep fighting\nStrength is how hard you hit whoever you attack\nSpeed helps "
-              "when you're dodging, attacking, or running away from enemies")
-        print("Your current attributes are:\nHealth {} of 12 / Strength {} of 12 / Speed {} of 12"
-              .format(self.player.health, self.player.health, self.player.speed))
+        print(f"It is very nice to meet you once more {self.player.name}\nRoll for you attributes, your attributes "
+              "consist of health, strength and speed:\nHealth is how many times you can get hit and keep fighting\n"
+              "Strength is how hard you hit whoever you attack\nSpeed helps when you're dodging, attacking, or running "
+              "away from enemies")
+        print(f"Your current attributes are:\nHealth {self.player.health} of 12 / Strength {self.player.health} of 12 /"
+              f" Speed {self.player.speed} of 12")
         while self.rolls < self.MAX_ROLL:
             userinput = input("Would you like to roll for new attributes? (yes/no)\n")
             while True:
@@ -38,30 +39,34 @@ class GameControl:
                 else:
                     userinput = input("Please enter a valid answer\nWould you like to roll for new attributes? "
                                       "(yes/no)\n")
-            if userinput.lower() == "yes":
+            if userinput == "yes":
                 new_rolls = self.roll_die(6, 6)
                 self.assign_attributes(new_rolls)
-
-                print('\nYour health is {} of 12, strength is {} of 12, speed is {} of 12'
-                      .format(self.player.health, self.player.strength,
-                              self.player.speed))
+                print(f'\nYour health is {self.player.health} of 12, strength is {self.player.strength} of 12, speed is'
+                      f' {self.player.speed} of 12')
                 self.rolls += 1
-                print("You have rolled {}/3 times, you have {} rolls left".format(self.rolls, (3 - self.rolls)))
+                print(f"You have rolled {self.rolls}/3 times, you have {(3 - self.rolls)} rolls left")
             else:
-                break
+                self.start_location()
 
     def ask_name(self):
         # print("Do you have a name?")
         name = input("Do you have a name?\n")
         self.player.change__init__(name=name)
-        if name.lower() == "yes":
+        current_rolls = self.roll_die(6, 6)
+        self.assign_attributes(current_rolls)
+        if name == "yes":
             # print("What is your name:")
             name = input("What is your name:\n")
             self.player.change__init__(name=name)
-        elif name.lower() == "no":
+            current_rolls = self.roll_die(6, 6)
+            self.assign_attributes(current_rolls)
+        elif name == "no":
             # print("What shall you be called:")
             name = input("What shall you be called:\n")
             self.player.change__init__(name=name)
+            current_rolls = self.roll_die(6, 6)
+            self.assign_attributes(current_rolls)
 
     def check_empty_file(self):
         with open("JSON files/SavedCharacterData.json", 'r') as read_obj:
@@ -74,7 +79,6 @@ class GameControl:
 
     def save_data(self):
         save_name = input("Save name (Data will be saved under this name):\n")
-        data = []
         with open('JSON files/SavedCharacterData.json') as outfile:
             data = json.load(outfile)
             times_checked = len(data)
@@ -97,13 +101,12 @@ class GameControl:
                     if save_replace == "yes":
                         for key in d:
                             if save_name == key:
-                                key = self.player.__dict__
                                 with open('JSON files/SavedCharacterData.json', 'w') as json_file:
                                     json.dump(data, json_file,
                                               indent=4,
                                               separators=(',', ': '))
                                 print("Campaign successfully overridden\n")
-                                return
+                                self.ask_name()
                     else:
                         self.save_data()
                 else:
@@ -118,7 +121,7 @@ class GameControl:
                             json.dump(data, json_file,
                                       indent=4,
                                       separators=(',', ': '))
-                        return
+                        self.ask_name()
                     else:
                         times_run += 1
                         pass
@@ -162,6 +165,7 @@ class GameControl:
                                 # print(v)
                                 # print("{} loaded!".format(load_name))
                     print(f"Successfully loaded {load_name}")
+                    self.run_location()
                 elif load_name == "create new save":
                     self.save_data()
                 elif load_name == "show previous saves":
@@ -218,9 +222,9 @@ class GameControl:
     def run_location(self):
         # Dev room entry code is dev-7-8-22
         self.location.player_movement()
+        self.location.revert_grid()
         self.location.save_grid()
         self.location.location_boarders(5)
-        self.location.revert_grid()
         self.location.print_location_grid(self.location.grid)
         
     def start_game(self):
@@ -233,16 +237,13 @@ class GameControl:
             else:
                 load_ask = input("Please input a valid response\nDo you have a previous saved campaign? (yes/no)\n")
         if load_ask == "yes":
-            gc.load_data()
+            self.load_data()
         else:
             print("Please create a new save!")
-            gc.save_data()
+            self.save_data()
+        self.ask_roll_again()
         print("Remember saves aren't automatic, if you want to save do it manually!")
         print("\n\n\n")
-
-    def action_prompt(self):
-        u = input("What would you like to do? (Options: move / look around / interact)")
-        print(u)
 
 
 gc = GameControl()
@@ -253,10 +254,5 @@ gc = GameControl()
 # gc.load_data()
 # #
 gc.start_game()
-gc.ask_name()
-current_rolls = gc.roll_die(6, 6)
-gc.assign_attributes(current_rolls)
-gc.ask_roll_again()
-gc.start_location()
 while True:
     gc.run_location()
