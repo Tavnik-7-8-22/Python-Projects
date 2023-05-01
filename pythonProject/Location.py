@@ -14,7 +14,7 @@ class Location:
         self.location_data = ""
         self.ZO_location = "Forest"
         self.move_count = 5
-        self.visibility = 3
+        self.visibility = 5
         self.update_temp_var = self.empty_space
         self.entrance = "[" + Colors.WHITE + "E" + Colors.END + "]"
         self.moves_north = 0
@@ -53,9 +53,9 @@ class Location:
         self.randomize_grid()
 
     def print_location_grid(self, g):
-        for i in range(len(g)):
-            for j in range(len(g[i])):
-                print(g[i][j], end=' ')
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[i])):
+                print(self.grid[i][j], end=' ')
             print()
 
     def increase_visibility(self):
@@ -232,8 +232,9 @@ class Location:
         with open("JSON files/SavedGridData.json", 'r') as f:
             one_char = f.read(1)
             if not one_char:
-                data = [{self.campaign_name:
-                        {"(" + str(self.moves_east) + "," + str(self.moves_north) + ")": self.grid}}]
+                data = [
+                    {self.campaign_name: {"(" + str(self.moves_east) + "," + str(self.moves_north) + ")": self.grid}}
+                    ]
                 sf = json.dumps(data, indent=4, separators=(',', ': '))
                 with open('JSON files/SavedGridData.json', "w") as outfile:
                     outfile.write(sf)
@@ -249,14 +250,16 @@ class Location:
             times_checked = len(data)
             times_run = 1
         for d in data:
-            for k, v in d.items():
-                if k == self.campaign_name:
-                    print(v.keys())
-                    for pos in v.keys():
-                        if pos == grid_name:
+            for key, value in d.items():
+                for k, v in value.items():
+                    if key == self.campaign_name:
+                        print(f"k:{k}, grid_name:{grid_name}")
+                        if k == grid_name:
+                            print("found grid")
                             self.grid = v
                             print("grid loaded")
-                        elif grid_name != k:
+                        else:
+                            print("Did not find grid")
                             new_grid = times_checked - times_run
                             if new_grid == 0:
                                 print("New grid saved\n")
@@ -403,10 +406,10 @@ class Location:
 loc = Location()
 loc.get_data()
 loc.create_location_grid(loc.visibility, loc.visibility)
+loc.location_boarders(5)
 loc.randomize_grid()
 loc.set_location()
 loc.check_empty_file()
-loc.location_boarders(5)
 loc.print_location_grid(loc.grid)
 while True:
     print(f"Currently at: ({loc.moves_east}, {loc.moves_north})")
