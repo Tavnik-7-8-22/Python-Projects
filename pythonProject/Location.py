@@ -21,7 +21,7 @@ class Location:
         self.moves_west = 0
         self.moves_south = 0
         self.moves_east = 0
-        # self.curr_pos = [self.moves_north, self.moves_east]
+        self.curr_pos = [self.moves_east, self.moves_north]
         self.boarder_distance = 0
         self.campaign_name = ''
 
@@ -274,16 +274,26 @@ class Location:
                                 pass
 
     def revert_grid(self):
-        if self.moves_north >= self.boarder_distance:
-            self.moves_north = self.boarder_distance
-        if self.moves_east >= self.boarder_distance:
-            self.moves_east = self.boarder_distance
-        if self.moves_south >= self.boarder_distance:
-            self.moves_south = self.boarder_distance
-            self.moves_north = -abs(self.boarder_distance)
-        if self.moves_west >= self.boarder_distance:
-            self.moves_west = self.boarder_distance
-            self.moves_east = -abs(self.boarder_distance)
+        for p in reversed(range(len(self.grid))):
+            for q in reversed(range(len(self.grid[p]))):
+                if q != 0:
+                    if self.grid[p][q - 1] == self.boarder_distance:
+                        self.moves_east += 1
+                        self.moves_west -= 1
+                if p != 0:
+                    if self.grid[p-1][q] == self.boarder_distance:
+                        self.moves_north += 1
+                        self.moves_south -= 1
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[i])):
+                if j != len(self.grid) - 1:
+                    if self.grid[i][j + 1] == self.boarder_distance:
+                        self.moves_east -= 1
+                        self.moves_west += 1
+                if i != len(self.grid) - 1:
+                    if self.grid[i + 1][j] == self.boarder_distance:
+                        self.moves_south += 1
+                        self.moves_north -= 1
 
     def move_north(self):
         self.update_grid_north()
@@ -321,7 +331,6 @@ class Location:
             move = input("What direction would you like to move in?\n(Options: west, north-west, north, north-east, "
                          "east, south-east, south, south-west)\n")
             self.move_count += 1
-        # previous = self.curr_pos
         if move in ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "north "
                     "west", "north east", "south east", "south west", "n", "ne", "e", "se", "s", "sw", "w", "nw"]:
             if move in ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west"]:
@@ -416,6 +425,5 @@ while True:
     loc.player_movement()
     loc.revert_grid()
     loc.save_grid()
-    loc.location_boarders(5)
     loc.location_boarders(5)
     loc.print_location_grid(loc.grid)
