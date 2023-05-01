@@ -2,7 +2,7 @@ import random
 
 
 class BaseCharacter:
-    def __init__(self, name='unknown'):
+    def __init__(self, name='unknown', **kwargs):
         self.name = name
         self.health = 0
         self.strength = 0
@@ -18,9 +18,8 @@ class BaseCharacter:
                            "MAX_HEALTH": 0, "heritage": '', "inventory": [], "possessive_nickname": self.name + 's',
                            "other_nickname": self.name}
 
-    def change__init__(self, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+    def change__init__(self, var, val):
+        setattr(self, var, val)
 
     def set_dead(self):
         self.is_alive = False

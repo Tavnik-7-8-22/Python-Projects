@@ -23,6 +23,10 @@ class Location:
         self.moves_east = 0
         # self.curr_pos = [self.moves_north, self.moves_east]
         self.boarder_distance = 0
+        self.campaign_name = ''
+
+    def assign_campaign_name(self, var, val):
+        setattr(self, var, val)
 
     def set_location(self):
         self.grid[len(self.grid)//2][len(self.grid)//2] = self.player
@@ -47,24 +51,6 @@ class Location:
                 row.append(self.empty_space)
             self.grid.append(row)
         self.randomize_grid()
-
-    # def update_grid(self):
-    #     # self.grid[self.prev_pos[0]][self.prev_pos[1]] = self.empty_space
-    #     col = self.curr_pos[0]
-    #     row = self.curr_pos[1]
-    #     if row <= 0:
-    #         self.curr_pos[1] = 0
-    #     if col <= 0:
-    #         self.curr_pos[0] = 0
-    #     if col >= len(self.grid):
-    #         self.curr_pos[0] = len(self.grid) - 1
-    #     if row >= len(self.grid[0]):
-    #         self.curr_pos[1] = len(self.grid[0]) - 1
-    #
-    #     self.grid[self.curr_pos[0]][self.curr_pos[1]] = self.player
-    #     col = self.curr_pos[0]
-    #     row = self.curr_pos[1]
-    #     print(*self.location_data["Forest"][self.curr_pos[0]][self.curr_pos[1]].values())
 
     def print_location_grid(self, g):
         for i in range(len(g)):
@@ -246,7 +232,8 @@ class Location:
         with open("JSON files/SavedGridData.json", 'r') as f:
             one_char = f.read(1)
             if not one_char:
-                data = [{"(" + str(self.moves_east) + "," + str(self.moves_north) + ")": self.grid}]
+                data = [{self.campaign_name:
+                        {"(" + str(self.moves_east) + "," + str(self.moves_north) + ")": self.grid}}]
                 sf = json.dumps(data, indent=4, separators=(',', ': '))
                 with open('JSON files/SavedGridData.json', "w") as outfile:
                     outfile.write(sf)
@@ -257,29 +244,31 @@ class Location:
 
     def save_grid(self):
         grid_name = "(" + str(self.moves_east) + "," + str(self.moves_north) + ")"
-        data = []
         with open('JSON files/SavedGridData.json') as outfile:
             data = json.load(outfile)
             times_checked = len(data)
             times_run = 1
         for d in data:
             for k, v in d.items():
-                if k == grid_name:
-                    self.grid = v
-                    print("grid loaded")
-                elif grid_name != k:
-                    new_grid = times_checked - times_run
-                    if new_grid == 0:
-                        print("New grid saved\n")
-                        data.append({grid_name: self.grid})
-                        with open('JSON files/SavedGridData.json', 'w') as json_file:
-                            json.dump(data, json_file,
-                                      indent=4,
-                                      separators=(',', ': '))
-                        return
-                    else:
-                        times_run += 1
-                        pass
+                if k == self.campaign_name:
+                    print(v.keys())
+                    for pos in v.keys():
+                        if pos == grid_name:
+                            self.grid = v
+                            print("grid loaded")
+                        elif grid_name != k:
+                            new_grid = times_checked - times_run
+                            if new_grid == 0:
+                                print("New grid saved\n")
+                                data.append({self.campaign_name: {grid_name: self.grid}})
+                                with open('JSON files/SavedGridData.json', 'w') as json_file:
+                                    json.dump(data, json_file,
+                                              indent=4,
+                                              separators=(',', ': '))
+                                return
+                            else:
+                                times_run += 1
+                                pass
 
     def revert_grid(self):
         if self.moves_north >= self.boarder_distance:
@@ -409,20 +398,21 @@ class Location:
                     for j in range(len(self.grid[i])):
                         pass
 
+
 #
-# loc = Location()
-# loc.get_data()
-# loc.create_location_grid(loc.visibility, loc.visibility)
-# loc.randomize_grid()
-# loc.set_location()
-# loc.check_empty_file()
-# loc.location_boarders(5)
-# loc.print_location_grid(loc.grid)
-# while True:
-#     print(f"Currently at: ({loc.moves_east}, {loc.moves_north})")
-#     loc.player_movement()
-#     loc.revert_grid()
-#     loc.save_grid()
-#     loc.location_boarders(5)
-#     loc.location_boarders(5)
-#     loc.print_location_grid(loc.grid)
+loc = Location()
+loc.get_data()
+loc.create_location_grid(loc.visibility, loc.visibility)
+loc.randomize_grid()
+loc.set_location()
+loc.check_empty_file()
+loc.location_boarders(5)
+loc.print_location_grid(loc.grid)
+while True:
+    print(f"Currently at: ({loc.moves_east}, {loc.moves_north})")
+    loc.player_movement()
+    loc.revert_grid()
+    loc.save_grid()
+    loc.location_boarders(5)
+    loc.location_boarders(5)
+    loc.print_location_grid(loc.grid)
