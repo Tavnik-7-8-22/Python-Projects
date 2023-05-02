@@ -172,7 +172,7 @@ class GameControl:
         self.location.revert_grid()
         self.location.save_grid()
         self.location.location_boarders(5)
-        self.location.print_location_grid(self.location.grid)
+        self.location.print_location_grid()
         
     def start_game(self):
         self.check_empty_file()
