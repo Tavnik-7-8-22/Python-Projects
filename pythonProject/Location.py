@@ -18,9 +18,9 @@ class Location:
         self.update_temp_var = self.empty_space
         self.entrance = "[" + Colors.WHITE + "E" + Colors.END + "]"
         self.moves_north = 0
-        self.moves_west = 0
-        self.moves_south = 0
+        self.moves_north_approach = 0
         self.moves_east = 0
+        self.moves_east_approach = 0
         self.curr_pos = [self.moves_east, self.moves_north]
         self.boarder_distance = 0
         self.campaign_name = ''
@@ -32,10 +32,8 @@ class Location:
         self.grid[len(self.grid)//2][len(self.grid)//2] = self.player
 
     def set_boarder_location(self):
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid)):
-                if i == self.moves_east and j == self.moves_north:
-                    self.grid[i][j] = self.player
+        if self.moves_east >= 0 or self.moves_north >= 0:
+            self.grid[0][0] = self.player
 
     def check_location(self):
         return self.ZO_location
@@ -221,18 +219,22 @@ class Location:
                     self.grid[0][j] = self.location_edge
                     # print(self.moves_north)
                     # print("Reached location edge (north)")
-                if self.moves_west >= boarder_distance:
+                elif self.moves_east <= -abs(boarder_distance):
                     self.grid[i][0] = self.location_edge
-                    # print(self.moves_west)
+                    # print(self.moves_east)
                     # print("Reached location edge (west)")
-                if self.moves_south >= boarder_distance:
+                elif self.moves_north <= -abs(boarder_distance):
                     self.grid[len(self.grid)-1][j] = self.location_edge
-                    # print(self.moves_south)
+                    # print(self.moves_north)
                     # print("Reached location edge (south)")
-                if self.moves_east >= boarder_distance:
+                elif self.moves_east >= boarder_distance:
                     self.grid[i][len(self.grid)-1] = self.location_edge
                     # print(self.moves_east)
                     # print("Reached location edge (east)")
+        if self.moves_north >= boarder_distance or self.moves_east >= boarder_distance:
+            self.approach_grid_movement()
+        else:
+            self.player_movement()
 
     def check_empty_file(self):
         with open("JSON files/SavedGridData.json", 'r') as f:
@@ -278,150 +280,136 @@ class Location:
                                 pass
 
     def revert_grid(self):
-        for p in reversed(range(len(self.grid))):
-            for q in reversed(range(len(self.grid[p]))):
-                if q != 0:
-                    if self.grid[p][q - 1] == self.boarder_distance:
-                        self.moves_east += 1
-                        self.moves_west -= 1
-                if p != 0:
-                    if self.grid[p-1][q] == self.boarder_distance:
-                        self.moves_north += 1
-                        self.moves_south -= 1
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[i])):
-                if j != len(self.grid) - 1:
-                    if self.grid[i][j + 1] == self.boarder_distance:
-                        self.moves_east -= 1
-                        self.moves_west += 1
-                if i != len(self.grid) - 1:
-                    if self.grid[i + 1][j] == self.boarder_distance:
-                        self.moves_south += 1
-                        self.moves_north -= 1
+        if self.moves_north > self.boarder_distance:
+            self.move_south()
+        if self.moves_east > self.boarder_distance:
+            self.move_west()
+        if self.moves_north > -abs(self.boarder_distance):
+            self.move_north()
+        if self.moves_east > -abs(self.boarder_distance):
+            self.move_east()
 
     def move_north(self):
         self.update_grid_north()
         self.randomize_grid_north()
         self.moves_north += 1
-        self.moves_south -= 1
 
     def move_east(self):
         self.update_grid_east()
         self.randomize_grid_east()
         self.moves_east += 1
-        self.moves_west -= 1
 
     def move_south(self):
         self.update_grid_south()
         self.randomize_grid_south()
-        self.moves_south += 1
         self.moves_north -= 1
 
     def move_west(self):
         self.update_grid_west()
         self.randomize_grid_west()
-        self.moves_west += 1
         self.moves_east -= 1
 
     def approach_grid_movement(self):
+        print("ran approach")
         if self.move_count == 5:
             self.move_count = 0
             print("Quick tip! You can save time by just imputing the initials of the direction you want to go in"
-                         "\nfor example: n for north, ne for north east, etc...\n")
+                  "\nfor example: n for north, ne for north east, etc...")
         move = input("What direction would you like to move in?\n(Options: west, north-west, north, north-east, "
                      "east, south-east, south, south-west)\n")
         self.move_count += 1
         while True:
             if move in ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west",
-                    "north west", "north east", "south east", "south west", "n", "ne", "e", "se", "s", "sw", "w", "nw"]:
+                        "north west", "north east", "south east", "south west", "n", "ne", "e", "se", "s", "sw", "w",
+                        "nw"]:
                 break
+            else:
+                move = input("Input invalid, please input a valid direction to move in.\nWhat direction would you like"
+                             " to move in?\n(Options: west, north-west, north, north-east, east, south-east, south, "
+                             "south-west)\n")
         if move == "west" or move == "w":
-            self.moves_west += 1
             self.moves_east -= 1
-        elif move == "north-west" or move == "north west" or move == "nw":
+            self.moves_east_approach -= 1
+        if move == "north-west" or move == "north west" or move == "nw":
             self.moves_north += 1
-            self.moves_south -= 1
-            self.moves_west += 1
             self.moves_east -= 1
-        elif move == "north" or move == "n":
+            self.moves_north_approach += 1
+            self.moves_east_approach -= 1
+        if move == "north" or move == "n":
             self.moves_north += 1
-            self.moves_south -= 1
-        elif move == "north-east" or move == "north east" or move == "ne":
+            self.moves_north_approach += 1
+        if move == "north-east" or move == "north east" or move == "ne":
             self.moves_north += 1
-            self.moves_south -= 1
             self.moves_east += 1
-            self.moves_west -= 1
-        elif move == "east" or move == "e":
+            self.moves_north_approach += 1
+            self.moves_east_approach += 1
+        if move == "east" or move == "e":
             self.moves_east += 1
-            self.moves_west -= 1
-        elif move == "south-east" or move == "south east" or move == "se":
-            self.moves_south += 1
+            self.moves_east_approach += 1
+        if move == "south-east" or move == "south east" or move == "se":
             self.moves_north -= 1
             self.moves_east += 1
-            self.moves_west -= 1
-        elif move == "south" or move == "s":
-            self.moves_south += 1
+            self.moves_north_approach -= 1
+        if move == "south" or move == "s":
             self.moves_north -= 1
-        elif move == "south-west" or move == "south west" or move == "sw":
-            self.moves_south += 1
+            self.moves_north_approach -= 1
+        if move == "south-west" or move == "south west" or move == "sw":
             self.moves_north -= 1
-            self.moves_west += 1
             self.moves_east -= 1
-        else:
-            print("PLease input a valid response")
+            self.moves_north_approach -= 1
+            self.moves_east_approach -= 1
+        if move == "dev-7-8-22":
+            while True:
+                dev_funct = input("You are now in dev testing mode, what do you want to run: ")
+                if dev_funct == "end":
+                    break
         self.set_boarder_location()
 
     def player_movement(self):
-        temp_list = []
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[i])):
-                temp_list.append(self.grid[i][j])
-        print(temp_list)
-        if '\x1b[100m[#]\x1b[0m' in temp_list:
-            self.approach_grid_movement()
-            temp_list = []
-            return
-        temp_list = []
+        print("ran movement")
         if self.move_count == 5:
             self.move_count = 0
             print("Quick tip! You can save time by just imputing the initials of the direction you want to go in"
-                  "\nfor example: n for north, ne for north east, etc...\n")
+                  "\nfor example: n for north, ne for north east, etc...")
         move = input("What direction would you like to move in?\n(Options: west, north-west, north, north-east, "
                      "east, south-east, south, south-west)\n")
         self.move_count += 1
         while True:
-            if move in ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west", "north"
-                        "west", "north east", "south east", "south west", "n", "ne", "e", "se", "s", "sw", "w", "nw"]:
+            if move in ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west",
+                        "north west", "north east", "south east", "south west", "n", "ne", "e", "se", "s", "sw", "w",
+                        "nw", "dev-7-8-22"]:
                 break
+            else:
+                move = input("Input invalid, please input a valid direction to move in.\nWhat direction would you like"
+                             " to move in?\n(Options: west, north-west, north, north-east, east, south-east, south, "
+                             "south-west)\n")
         if move == "west" or move == "w":
             self.move_west()
-        elif move == "north-west" or move == "north west" or move == "nw":
+        if move == "north-west" or move == "north west" or move == "nw":
             self.move_north()
             self.move_west()
-        elif move == "north" or move == "n":
+        if move == "north" or move == "n":
             self.move_north()
-        elif move == "north-east" or move == "north east" or move == "ne":
+        if move == "north-east" or move == "north east" or move == "ne":
             self.move_north()
             self.move_east()
-        elif move == "east" or move == "e":
+        if move == "east" or move == "e":
             self.move_east()
-        elif move == "south-east" or move == "south east" or move == "se":
+        if move == "south-east" or move == "south east" or move == "se":
             self.move_south()
             self.move_east()
-        elif move == "south" or move == "s":
+        if move == "south" or move == "s":
             self.move_south()
-        elif move == "south-west" or move == "south west" or move == "sw":
+        if move == "south-west" or move == "south west" or move == "sw":
             self.move_south()
             self.move_west()
-        else:
-            if move == "dev-7-8-22":
-                while True:
-                    dev_funct = input("You are now in dev testing mode, what do you want to run: ")
-                    if dev_funct == "end":
-                        break
-            else:
-                print("Please input a valid option.")
+        if move == "dev-7-8-22":
+            while True:
+                dev_funct = input("You are now in dev testing mode, what do you want to run: ")
+                if dev_funct == "end":
+                    break
         self.set_location()
+        self.revert_grid()
 
     def zo_locations(self):
         if self.update_temp_var == self.entrance:
@@ -430,21 +418,28 @@ class Location:
                     for j in range(len(self.grid[i])):
                         pass
 
+    def clear_save_file(self):
+        """
+        Changes content of grid file to 0 to make it easier to delete its contents
+        ONLY RUN TO CLEAR SAVED DATA IF YOU RUN THE PROGRAM WITH AN EMPTY FOLDER IT BREAKS
+        """
+        data = 0
+        sf = json.dumps(data, indent=4, separators=(',', ': '))
+        with open('JSON files/SavedGridData.json', "w") as outfile:
+            outfile.write(sf)
+
 
 #
 loc = Location()
 loc.get_data()
 loc.create_location_grid(loc.visibility, loc.visibility)
-loc.location_boarders(5)
 loc.randomize_grid()
 loc.set_location()
 loc.check_empty_file()
 loc.print_location_grid()
 while True:
     print(f"Currently at: ({loc.moves_east}, {loc.moves_north})")
-    loc.player_movement()
-    loc.revert_grid()
-    loc.save_grid()
     loc.location_boarders(5)
-    loc.approach_grid_movement()
+    print(-abs(loc.boarder_distance))
+    loc.save_grid()
     loc.print_location_grid()

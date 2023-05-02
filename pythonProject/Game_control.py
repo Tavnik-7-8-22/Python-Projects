@@ -192,7 +192,7 @@ class GameControl:
             self.ask_roll_again()
         print("Remember saves aren't automatic, if you want to save do it manually!")
         print("\n\n\n")
-        self.location.print_location_grid(self.location.grid)
+        self.location.print_location_grid()
 
 
 gc = GameControl()
