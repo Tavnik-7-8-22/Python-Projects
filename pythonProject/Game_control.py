@@ -2,6 +2,8 @@ from Location import Location
 from Character import User
 import random
 import json
+import logging
+logging.basicConfig(level=logging.DEBUG, filename='Game_control-debug.log')
 
 
 class GameControl:
