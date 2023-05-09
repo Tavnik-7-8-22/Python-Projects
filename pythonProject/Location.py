@@ -13,22 +13,24 @@ class Location:
         self.tree = "[" + Colors.GREEN + "T" + Colors.END + "]"
         self.location_edge = Colors.GREYBG + "[#]" + Colors.END
         self.entrance = "[" + Colors.WHITE + "E" + Colors.END + "]"
+        self.out_of_vision = Colors.WHITE + "[ ]" + Colors.END
         self.grid = []
         self.location_data = ""
         self.ZO_location = "Forest"
-        self.move_count = 5
-        self.visibility = 5
+        self.move_count = 9
+        self.visibility = 9
         self.update_temp_var = self.empty_space
         self.moves_UPDOWN = 0
-        self.moves_UPDOWN_approach = 2
+        self.moves_UPDOWN_approach = 0
         self.moves_RIGHTLEFT = 0
-        self.moves_RIGHTLEFT_approach = 2
+        self.moves_RIGHTLEFT_approach = 0
         self.curr_pos = [self.moves_RIGHTLEFT, self.moves_UPDOWN]
         self.boarder_distance = 0
         self.campaign_name = ''
         self.distance_to_boarder_UPOWN = self.boarder_distance
         self.distance_to_boarder_RIGHTLEFT = self.boarder_distance
-        self.approach_grid_movement = False
+        self.approach_grid_movement_UPDOWN = False
+        self.approach_grid_movement_RIGHTLEFT = False
         logging.debug('__init__ accessed')
 
     def assign_campaign_name(self, var, val):
@@ -40,6 +42,10 @@ class Location:
         logging.debug('Assigned campaign name')
         logging.debug('Called from Game_control')
         setattr(self, var, val)
+
+    def set_boarder_approach_location(self):
+        self.moves_UPDOWN_approach = (len(self.grid) // 2)
+        self.moves_RIGHTLEFT_approach = (len(self.grid) // 2)
 
     def set_location(self):
         """
@@ -55,14 +61,8 @@ class Location:
         logging.debug(f'Setting [P] <player> to coordinates ({self.moves_RIGHTLEFT_approach}, '
                       f'{self.moves_UPDOWN_approach})')
         logging.debug('Called for self.player_movement()')
+        self.grid[self.moves_UPDOWN_approach][self.moves_RIGHTLEFT_approach] = self.player
         print(f"{self.moves_RIGHTLEFT_approach}, {self.moves_UPDOWN_approach}")
-        if abs(self.moves_RIGHTLEFT_approach) <= (
-                len(self.grid) - 1) or abs(self.moves_RIGHTLEFT_approach) >= 0 or abs(self.moves_UPDOWN_approach) <= (
-                len(self.grid) - 1) or abs(self.moves_UPDOWN_approach) >= 0:
-            print(self.update_temp_var)
-            self.grid[self.moves_UPDOWN_approach][self.moves_RIGHTLEFT_approach] = self.update_temp_var
-            print(self.update_temp_var)
-            self.grid[self.moves_UPDOWN_approach][self.moves_RIGHTLEFT_approach] = self.player
 
     def check_location(self):
         """
@@ -329,19 +329,33 @@ class Location:
             for j in range(len(self.grid[i])):
                 # # print(f"{i, j}")
                 # # print(temp_var)
-                if j != len(self.grid)-1:
-                    if self.grid[i][j+1] == self.player:
-                        self.grid[len(self.grid)//2][(len(self.grid)//2)-1] = self.update_temp_var
-                        # # print(self.update_temp_var)
-                        # # print("Changed to temp var")
-                        # if self.update_temp_var == self.enemy:
-                        #     self.trigger_event
-                    elif self.grid[i][j] == self.player:
-                        self.update_temp_var = self.grid[len(self.grid)//2][((len(self.grid))//2)+1]
-                        # # print(self.update_temp_var)
-                        # # print("Assigned temp var")
-                    else:
-                        self.grid[i][j] = self.grid[i][j+1]
+                if not self.approach_grid_movement_UPDOWN or not self.approach_grid_movement_RIGHTLEFT:
+                    if j != len(self.grid)-1:
+                        if self.grid[i][j+1] == self.player:
+                            self.grid[len(self.grid)//2][(len(self.grid)//2)-1] = self.update_temp_var
+                            # # print(self.update_temp_var)
+                            # # print("Changed to temp var")
+                            # if self.update_temp_var == self.enemy:
+                            #     self.trigger_event
+                        elif self.grid[i][j] == self.player:
+                            self.update_temp_var = self.grid[len(self.grid)//2][((len(self.grid))//2)+1]
+                            # # print(self.update_temp_var)
+                            # # print("Assigned temp var")
+                        else:
+                            self.grid[i][j] = self.grid[i][j+1]
+                else:
+                    approach_moves_east = 1
+                    if j != len(self.grid)-1:
+                        if self.grid[i][j+1] == self.player:
+                            self.grid[len(self.grid)//2][(len(self.grid)//2)-1] = self.update_temp_var
+                            # # print(self.update_temp_var)
+                            # # print("Changed to temp var")
+                            # if self.update_temp_var == self.enemy:
+                            #     self.trigger_event
+                        elif self.grid[i][j] == self.player:
+                            self.update_temp_var = self.grid[len(self.grid)//2][((len(self.grid))//2)+1]
+                    if j == len(self.grid)-approach_moves_east:
+                        self.grid[i][j] = self.out_of_vision
 
     def location_boarders(self, boarder_distance):
         """
@@ -357,36 +371,37 @@ class Location:
         self.distance_to_boarder_RIGHTLEFT = (boarder_distance - abs(self.moves_RIGHTLEFT))
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                if self.moves_UPDOWN < 0 or self.moves_RIGHTLEFT < 0:
+                if self.moves_UPDOWN < 0 or self.moves_UPDOWN > 0:
                     if -abs(self.distance_to_boarder_UPOWN) > -abs(self.visibility//2):
                         self.grid[len(self.grid)-1][j] = self.location_edge
-                        self.approach_grid_movement = True
+                        self.approach_grid_movement_UPDOWN = True
                         logging.debug('Changed last grid down of grid')
                         # print(self.moves_UPDOWN)
                         # print("Reached location edge (south)")
-                    elif -abs(self.distance_to_boarder_RIGHTLEFT) > -abs(self.visibility//2):
-                        self.grid[i][0] = self.location_edge
-                        self.approach_grid_movement = True
-                        logging.debug('Changed last row left of grid')
-                        # print(self.moves_RIGHTLEFT)
-                        # print("Reached location edge (east)")
-                    else:
-                        self.approach_grid_movement = False
-                elif self.moves_UPDOWN > 0 or self.moves_RIGHTLEFT > 0:
-                    if self.distance_to_boarder_UPOWN < (self.visibility//2):
+                    elif self.distance_to_boarder_UPOWN < (self.visibility//2):
                         self.grid[0][j] = self.location_edge
-                        self.approach_grid_movement = True
+                        self.approach_grid_movement_UPDOWN = True
                         logging.debug('Changed first row up of grid')
                         # print(self.moves_UPDOWN)
                         # print("Reached location edge (north)")
+
+                    else:
+                        self.approach_grid_movement_UPDOWN = False
+                elif self.moves_RIGHTLEFT < 0 or self.moves_RIGHTLEFT > 0:
+                    if -abs(self.distance_to_boarder_RIGHTLEFT) > -abs(self.visibility//2):
+                        self.grid[i][0] = self.location_edge
+                        self.approach_grid_movement_RIGHTLEFT = True
+                        logging.debug('Changed last row left of grid')
+                        # print(self.moves_RIGHTLEFT)
+                        # print("Reached location edge (east)")
                     elif self.distance_to_boarder_RIGHTLEFT < (self.visibility//2):
                         self.grid[i][len(self.grid)-1] = self.location_edge
-                        self.approach_grid_movement = True
+                        self.approach_grid_movement_RIGHTLEFT = True
                         logging.debug('Changed first row right of grid')
                         # print(self.moves_RIGHTLEFT)
                         # print("Reached location edge (west)")
                     else:
-                        self.approach_grid_movement = False
+                        self.approach_grid_movement_RIGHTLEFT = False
 
     def check_empty_file(self):
         """
@@ -479,7 +494,7 @@ class Location:
         Triggers either the self.update and self.randomize _grid_north() and moves
         """
         logging.debug('Move_north called')
-        if not self.approach_grid_movement:
+        if not self.approach_grid_movement_UPDOWN:
             logging.debug("ran player movement")
             print("movement")
             self.update_grid_north()
@@ -489,11 +504,12 @@ class Location:
             logging.debug("ran player approach")
             print("approach")
             if self.moves_UPDOWN_approach > 0:
+                self.moves_UPDOWN += 1
                 self.moves_UPDOWN_approach -= 1
 
     def move_east(self):
         logging.debug('Move_east called')
-        if not self.approach_grid_movement:
+        if not self.approach_grid_movement_RIGHTLEFT:
             logging.debug("ran player movement")
             print("movement")
             self.update_grid_east()
@@ -503,11 +519,13 @@ class Location:
             logging.debug("ran player approach")
             print("approach")
             if self.moves_RIGHTLEFT_approach < (len(self.grid) - 1):
+                self.update_grid_east()
+                self.moves_RIGHTLEFT += 1
                 self.moves_RIGHTLEFT_approach += 1
 
     def move_south(self):
         logging.debug('Move_south called')
-        if not self.approach_grid_movement:
+        if not self.approach_grid_movement_UPDOWN:
             logging.debug("ran player movement")
             print("movement")
             self.update_grid_south()
@@ -517,11 +535,12 @@ class Location:
             logging.debug("ran player approach")
             print("approach")
             if self.moves_UPDOWN_approach < (len(self.grid) - 1):
+                self.moves_UPDOWN += 1
                 self.moves_UPDOWN_approach += 1
 
     def move_west(self):
         logging.debug('Move_west called')
-        if not self.approach_grid_movement:
+        if not self.approach_grid_movement_RIGHTLEFT:
             logging.debug("ran player movement")
             print("movement")
             self.update_grid_west()
@@ -531,65 +550,8 @@ class Location:
             logging.debug("ran player approach")
             print("approach")
             if self.moves_RIGHTLEFT_approach > 0:
+                self.moves_RIGHTLEFT += 1
                 self.moves_RIGHTLEFT_approach -= 1
-
-    # def approach_grid_movement(self):
-    #     print("ran approach")
-    #     if self.move_count == 5:
-    #         self.move_count = 0
-    #         print("Quick tip! You can save time by just imputing the initials of the direction you want to go in\n"
-    #               "for example: n for north, ne for north east, etc...")
-    #     move = input("What direction would you like to move in?\n(Options: west, north-west, north, north-east, "
-    #                  "east, south-east, south, south-west)\n")
-    #     self.move_count += 1
-    #     while True:
-    #         if move in ["west", "north-west", "north", "north-east", "east", "south-east", "south", "south-west",
-    #                     "north west", "north east", "south east", "south west", "n", "ne", "e", "se", "s", "sw", "w",
-    #                     "nw"]:
-    #             break
-    #         else:
-    #             move = input("Input invalid, please input a valid direction to move in.\nWhat direction would you "
-    #                          "like to move in?\n(Options: west, north-west, north, north-east, east, south-east,
-    #                          south, south-west)\n")
-    #     if move == "west" or move == "w":
-    #         self.moves_RIGHTLEFT -= 1
-    #         self.moves_RIGHTLEFT_approach -= 1
-    #     elif move == "north-west" or move == "north west" or move == "nw":
-    #         self.moves_UPDOWN += 1
-    #         self.moves_RIGHTLEFT -= 1
-    #         self.moves_UPDOWN_approach -= 1
-    #         self.moves_RIGHTLEFT_approach -= 1
-    #     elif move == "north" or move == "n":
-    #         self.moves_UPDOWN -= 1
-    #         self.moves_UPDOWN_approach -= 1
-    #     elif move == "north-east" or move == "north east" or move == "ne":
-    #         self.moves_UPDOWN -= 1
-    #         self.moves_RIGHTLEFT += 1
-    #         self.moves_UPDOWN_approach -= 1
-    #         self.moves_RIGHTLEFT_approach += 1
-    #     elif move == "east" or move == "e":
-    #         self.moves_RIGHTLEFT += 1
-    #         self.moves_RIGHTLEFT_approach += 1
-    #     elif move == "south-east" or move == "south east" or move == "se":
-    #         self.moves_UPDOWN -= 1
-    #         self.moves_RIGHTLEFT += 1
-    #         self.moves_UPDOWN_approach += 1
-    #         self.moves_RIGHTLEFT_approach += 1
-    #     elif move == "south" or move == "s":
-    #         self.moves_UPDOWN -= 1
-    #         self.moves_UPDOWN_approach += 1
-    #     elif move == "south-west" or move == "south west" or move == "sw":
-    #         self.moves_UPDOWN -= 1
-    #         self.moves_RIGHTLEFT -= 1
-    #         self.moves_UPDOWN_approach -= 1
-    #         self.moves_RIGHTLEFT_approach += 1
-    #     else:
-    #         while True:
-    #             dev_funct = input("You are now in dev testing mode, what do you want to run: ")
-    #             if dev_funct == "end":
-    #                 break
-    #     # self.set_boarder_location()
-    #     self.revert_grid()
 
     def player_movement(self):
         logging.debug('Player_movement called')
@@ -645,7 +607,7 @@ class Location:
                         pass
 
     def set_player_pos(self):
-        if self.approach_grid_movement:
+        if self.approach_grid_movement_UPDOWN or self.approach_grid_movement_RIGHTLEFT:
             self.set_boarder_location()
         else:
             self.set_location()
@@ -669,11 +631,11 @@ loc.create_location_grid(loc.visibility, loc.visibility)
 loc.set_location()
 loc.check_empty_file()
 loc.print_location_grid()
-print(loc.boarder_distance - abs(loc.moves_UPDOWN))
+loc.set_boarder_approach_location()
 while True:
     print(f"Currently at: ({loc.moves_RIGHTLEFT}, {loc.moves_UPDOWN})")
     loc.player_movement()
-    loc.location_boarders(5)
+    loc.location_boarders(10)
     loc.save_grid()
     loc.set_player_pos()
     loc.print_location_grid()
