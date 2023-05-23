@@ -11,30 +11,24 @@ class Location:
         self.empty_space = "   "
         self.enemy = "[" + Colors.RED + "E" + Colors.END + "]"
         self.tree = "[" + Colors.GREEN + "T" + Colors.END + "]"
-        self.location_edge = "   "
         self.entrance = Colors.WHITE + "[E]" + Colors.END
         self.out_of_vision = Colors.WHITE + "[ ]" + Colors.END
         self.grid = []
         self.location_data = ""
         self.ZO_location = "Forest"
         self.move_count = 9
-        self.visibility = 41
+        self.visibility = 5
         self.update_temp_var = self.empty_space
         self.moves_UPDOWN = 0
-        self.moves_UPDOWN_approach = 0
         self.moves_RIGHTLEFT = 0
-        self.moves_RIGHTLEFT_approach = 0
-        self.curr_pos = [self.moves_RIGHTLEFT, self.moves_UPDOWN]
+        self.curr_pos = [20, 20]
         self.boarder_distance = 0
         self.campaign_name = ''
         self.distance_to_boarder_UPOWN = self.boarder_distance
         self.distance_to_boarder_RIGHTLEFT = self.boarder_distance
         self.approach_grid_movement_UPDOWN = False
         self.approach_grid_movement_RIGHTLEFT = False
-        self.approach_moves_north = 0
-        self.approach_moves_east = 1
-        self.approach_moves_south = 1
-        self.approach_moves_west = 1
+        self.set_location_runs = 0
         logging.debug('__init__ accessed')
 
     def assign_campaign_name(self, var, val):
@@ -47,27 +41,17 @@ class Location:
         logging.debug('Called from Game_control')
         setattr(self, var, val)
 
-    def set_boarder_approach_location(self):
-        self.moves_UPDOWN_approach = (len(self.grid) // 2)
-        self.moves_RIGHTLEFT_approach = (len(self.grid) // 2)
-
     def set_location(self):
         """
-        Sets the center of the grid to self.player
+
         """
         logging.debug('Set_location called')
-        logging.debug('Set location to middle of graph')
+        logging.debug(f'Set location to {self.curr_pos[0]}, {self.curr_pos[1]}')
         logging.debug('Called from self.player_movement()')
-        self.grid[len(self.grid)//2][len(self.grid)//2] = self.player
-
-    def set_boarder_location(self):
-        logging.debug('Set_boarder_location called')
-        logging.debug(f'Setting [P] <player> to coordinates ({self.moves_RIGHTLEFT_approach}, '
-                      f'{self.moves_UPDOWN_approach})')
-        logging.debug('Called for self.player_movement()')
-        self.grid[len(self.grid) // 2][len(self.grid) // 2] = self.update_temp_var
-        self.grid[self.moves_UPDOWN_approach][self.moves_RIGHTLEFT_approach] = self.player
-        print(f"{self.moves_RIGHTLEFT_approach}, {self.moves_UPDOWN_approach}")
+        if self.set_location_runs == 0:
+            self.update_temp_var = self.grid[self.curr_pos[0]][self.curr_pos[1]]
+        self.grid[self.curr_pos[0]][self.curr_pos[1]] = self.player
+        self.set_location_runs += 1
 
     def check_location(self):
         """
@@ -124,6 +108,12 @@ class Location:
                 print(self.grid[i][j], end=' ')
             print()
 
+    def print_player_grid(self):
+        for i in range(self.curr_pos[0] - self.visibility//2, self.curr_pos[0] + self.visibility//2 + 1):
+            for j in range(self.curr_pos[1] - self.visibility//2, self.curr_pos[1] + self.visibility//2 + 1):
+                print(self.grid[i][j], end=' ')
+            print()
+
     def increase_visibility(self):
         """
         Increases the size of the grid by 2 spaces in order to keep the existence of a perfect center (equal grid spaces
@@ -170,106 +160,66 @@ class Location:
                     self.grid[i][len(self.grid) - 1] = random_gen
 
     def update_grid(self, direction):
-        if not self.approach_grid_movement_UPDOWN:
-            for i in reversed(range(len(self.grid))):
-                for j in reversed(range(len(self.grid[i]))):
-                    if direction == "North":
-                        if i != 0:
-                            if self.grid[i - 1][j] == self.player:
-                                self.grid[(len(self.grid) // 2) + 1][len(self.grid) // 2] = self.update_temp_var
-                                self.update_temp_var = self.grid[(len(self.grid) // 2) - 1][len(self.grid) // 2]
-                            else:
-                                self.grid[i][j] = self.grid[i - 1][j]
-            for i in range(len(self.grid)):
-                for j in range(len(self.grid[i])):
-                    if direction == "South":
-                        if i != len(self.grid) - 1:
-                            if self.grid[i + 1][j] == self.player:
-                                self.grid[(len(self.grid) // 2) - 1][len(self.grid) // 2] = self.update_temp_var
-                                self.update_temp_var = self.grid[(len(self.grid) // 2) + 1][(len(self.grid)) // 2]
-                            else:
-                                self.grid[i][j] = self.grid[i + 1][j]
-        else:
-            for i in reversed(range(len(self.grid))):
-                for j in reversed(range(len(self.grid[i]))):
-                    if direction == "North":
-                        print("moved north")
-                        if i != 0:
-                            if self.grid[i - 1][j] == self.player:
-                                self.grid[
-                                    self.moves_UPDOWN_approach + 1][
-                                    self.moves_UPDOWN_approach] = self.update_temp_var
-                                self.update_temp_var = self.grid[
-                                    self.moves_UPDOWN_approach - 1][
-                                    self.moves_UPDOWN_approach]
-                            else:
-                                self.grid[i][j] = self.grid[i - 1][j]
-                            self.grid[(len(self.grid) - 1) - self.approach_moves_north][j] = self.out_of_vision
-                    if direction == "South":
-                        print("moved south")
-                        if i != len(self.grid) - 1:
-                            if self.grid[i + 1][j] == self.player:
-                                self.grid[
-                                    self.moves_UPDOWN_approach][
-                                    self.moves_UPDOWN_approach - 1] = self.update_temp_var
-                                self.update_temp_var = self.grid[
-                                    self.moves_UPDOWN_approach][
-                                    self.moves_UPDOWN_approach + 1]
-                            else:
-                                self.grid[i][j] = self.grid[i + 1][j]
-                            self.grid[(len(self.grid) - 1) - ((len(self.grid) - 1) - self.approach_moves_south)][
-                                j] = self.out_of_vision
-        if not self.approach_grid_movement_RIGHTLEFT:
-            for i in range(len(self.grid)):
-                for j in range(len(self.grid[i])):
-                    if direction == "East":
-                        if j != len(self.grid) - 1:
-                            if self.grid[i][j + 1] == self.player:
-                                self.grid[len(self.grid) // 2][(len(self.grid) // 2) - 1] = self.update_temp_var
-                                self.update_temp_var = self.grid[len(self.grid) // 2][((len(self.grid)) // 2) + 1]
-                            else:
-                                self.grid[i][j] = self.grid[i][j + 1]
-            for i in reversed(range(len(self.grid))):
-                for j in reversed(range(len(self.grid[i]))):
-                    if direction == "West":
-                        if j != 0:
-                            if self.grid[i][j - 1] == self.player:
-                                self.grid[len(self.grid) // 2][(len(self.grid) // 2) + 1] = self.update_temp_var
-                                self.update_temp_var = self.grid[(len(self.grid)) // 2][(len(self.grid) // 2) - 1]
-                            else:
-                                self.grid[i][j] = self.grid[i][j - 1]
-        else:
-            for i in range(len(self.grid)):
-                for j in range(len(self.grid[i])):
-                    if direction == "East":
-                        print("moved east")
-                        if j != len(self.grid) - 1:
-                            if self.grid[i][j + 1] == self.player:
-                                self.grid[
-                                    self.moves_RIGHTLEFT_approach][
-                                    self.moves_RIGHTLEFT_approach - 1] = self.update_temp_var
-                                self.update_temp_var = self.grid[
-                                    self.moves_RIGHTLEFT_approach][
-                                    self.moves_RIGHTLEFT_approach + 1]
-                            else:
-                                self.grid[i][j] = self.grid[i][j + 1]
-                            self.grid[i][(len(self.grid) - 1) - (
-                                        (len(self.grid) - 1) - self.approach_moves_east)] = self.out_of_vision
-            for i in range(len(self.grid)):
-                for j in range(len(self.grid[i])):
-                    if direction == "West":
-                        print("moved west")
-                        if self.grid[i][j] == self.player:
+        for i in reversed(range(len(self.grid))):
+            for j in reversed(range(len(self.grid[i]))):
+                if direction == "North":
+                    # print("moved north")
+                    if i != 0:
+                        if self.grid[i - 1][j] == self.player:
                             self.grid[
-                                self.moves_RIGHTLEFT_approach - 1][
-                                self.moves_RIGHTLEFT_approach] = self.update_temp_var
+                                self.curr_pos[0] + 1][
+                                self.curr_pos[1]] = self.update_temp_var
                             self.update_temp_var = self.grid[
-                                self.moves_RIGHTLEFT_approach + 1][
-                                self.moves_RIGHTLEFT_approach]
+                                self.curr_pos[0] - 1][
+                                self.curr_pos[1]]
                         else:
-                            self.grid[i][j] = self.grid[i][j - 1]
-                        self.grid[i][(len(self.grid) - 1) - (
-                                    (len(self.grid) - 1) - self.approach_moves_west)] = self.out_of_vision
+                            self.grid[i][j] = self.grid[i - 1][j]
+                        # self.grid[(len(self.grid) - 1) - self.approach_moves_north][j] = self.out_of_vision
+                if direction == "South":
+                    # print("moved south")
+                    if i != len(self.grid) - 1:
+                        if self.grid[i + 1][j] == self.player:
+                            self.grid[
+                                self.curr_pos[0]][
+                                self.curr_pos[1] - 1] = self.update_temp_var
+                            self.update_temp_var = self.grid[
+                                self.curr_pos[0]][
+                                self.curr_pos[1] + 1]
+                        else:
+                            self.grid[i][j] = self.grid[i + 1][j]
+                        # self.grid[(len(self.grid) - 1) - ((len(self.grid) - 1) - self.approach_moves_south)][
+                            # j] = self.out_of_vision
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[i])):
+                if direction == "East":
+                    # print("moved east")
+                    if j != len(self.grid) - 1:
+                        if self.grid[i][j + 1] == self.player:
+                            self.grid[
+                                self.curr_pos[0]][
+                                self.curr_pos[1] - 1] = self.update_temp_var
+                            self.update_temp_var = self.grid[
+                                self.curr_pos[0]][
+                                self.curr_pos[1] + 1]
+                        else:
+                            self.grid[i][j] = self.grid[i][j + 1]
+                        # self.grid[i][(len(self.grid) - 1) - (
+                                    # (len(self.grid) - 1) - self.approach_moves_east)] = self.out_of_vision
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[i])):
+                if direction == "West":
+                    # print("moved west")
+                    if self.grid[i][j] == self.player:
+                        self.grid[
+                            self.curr_pos[0] - 1][
+                            self.curr_pos[1]] = self.update_temp_var
+                        self.update_temp_var = self.grid[
+                            self.curr_pos[0] + 1][
+                            self.curr_pos[1]]
+                    else:
+                        self.grid[i][j] = self.grid[i][j - 1]
+                    # self.grid[i][(len(self.grid) - 1) - (
+                    #             (len(self.grid) - 1) - self.approach_moves_west)] = self.out_of_vision
 
     def location_boarders(self, boarder_distance):
         """
@@ -359,94 +309,36 @@ class Location:
                                 times_run += 1
                                 pass
 
-    def revert_grid(self):
-        """
-        Prevents player movement past the boarder '[#]'
-        """
-        logging.debug('Revert_grid called')
-        logging.debug('Prevents movement when moves in any direction are equal to boarder distance')
-        logging.debug('Called in Location loop')
-        if self.moves_UPDOWN > self.boarder_distance:
-            self.move_south()
-            logging.debug('Reverted grid north by one grid south')
-        if self.moves_RIGHTLEFT_approach > self.boarder_distance:
-            self.move_west()
-            logging.debug('Reverted grid east by one grid west')
-        if self.moves_UPDOWN_approach < -abs(self.boarder_distance):
-            self.move_north()
-            logging.debug('Reverted grid south by one grid north')
-        if self.moves_RIGHTLEFT_approach < -abs(self.boarder_distance):
-            self.move_east()
-            logging.debug('Reverted grid west by one grid east')
-
     def move_north(self):
         """
         Triggers either the self.update and self.randomize _grid_north() and moves
         """
         logging.debug('Move_north called')
-        if not self.approach_grid_movement_UPDOWN:
-            logging.debug("ran player movement")
-            print("movement")
-            self.update_grid("North")
-            self.randomize_grid("North")
-            self.moves_UPDOWN += 1
-            self.approach_moves_north = 0
-        else:
-            logging.debug("ran player approach")
-            print("approach")
-            self.update_grid("North")
-            self.moves_UPDOWN += 1
-            self.moves_UPDOWN_approach -= 1
-            if self.approach_moves_north < self.visibility//2:
-                self.approach_moves_north += 1
+        logging.debug("ran player movement")
+        self.update_grid("North")
+        self.randomize_grid("North")
+        self.moves_UPDOWN += 1
 
     def move_east(self):
         logging.debug('Move_east called')
-        if not self.approach_grid_movement_RIGHTLEFT:
-            logging.debug("ran player movement")
-            print("movement")
-            self.update_grid("East")
-            self.randomize_grid("East")
-            self.moves_RIGHTLEFT += 1
-        else:
-            logging.debug("ran player approach")
-            print("approach")
-            if self.moves_RIGHTLEFT_approach < (len(self.grid) - 1):
-                self.update_grid("East")
-                self.moves_RIGHTLEFT += 1
-                self.moves_RIGHTLEFT_approach += 1
+        logging.debug("ran player movement")
+        self.update_grid("East")
+        self.randomize_grid("East")
+        self.moves_RIGHTLEFT += 1
 
     def move_south(self):
         logging.debug('Move_south called')
-        if not self.approach_grid_movement_UPDOWN:
-            logging.debug("ran player movement")
-            print("movement")
-            self.update_grid("South")
-            self.randomize_grid("South")
-            self.moves_UPDOWN -= 1
-        else:
-            logging.debug("ran player approach")
-            print("approach")
-            if self.moves_UPDOWN_approach < (len(self.grid) - 1):
-                self.update_grid("South")
-                self.moves_UPDOWN -= 1
-                self.moves_UPDOWN_approach += 1
+        logging.debug("ran player movement")
+        self.update_grid("South")
+        self.randomize_grid("South")
+        self.moves_UPDOWN -= 1
 
     def move_west(self):
         logging.debug('Move_west called')
-        if not self.approach_grid_movement_RIGHTLEFT:
-            logging.debug("ran player movement")
-            print("movement")
-            self.update_grid("West")
-            self.randomize_grid("West")
-            self.moves_RIGHTLEFT -= 1
-        else:
-            logging.debug("ran player approach")
-            print("approach")
-            if self.moves_RIGHTLEFT_approach > 0:
-                self.update_grid("West")
-                self.moves_RIGHTLEFT -= 1
-                self.moves_RIGHTLEFT_approach -= 1
+        logging.debug("ran player movement")
+        self.update_grid("West")
+        self.randomize_grid("West")
+        self.moves_RIGHTLEFT -= 1
 
     def player_movement(self):
         logging.debug('Player_movement called')
@@ -491,7 +383,6 @@ class Location:
                 dev_funct = input("You are now in dev testing mode, what do you want to run: ")
                 if dev_funct == "end":
                     break
-        self.revert_grid()
 
     def zo_locations(self):
         logging.debug('ZO_locations called')
@@ -500,12 +391,6 @@ class Location:
                 for i in range(len(self.grid)):
                     for j in range(len(self.grid[i])):
                         pass
-
-    def set_player_pos(self):
-        if self.approach_grid_movement_UPDOWN or self.approach_grid_movement_RIGHTLEFT:
-            self.set_boarder_location()
-        else:
-            self.set_location()
 
     def clear_save_file(self):
         """
@@ -519,52 +404,78 @@ class Location:
             outfile.write(sf)
 
     def generate_biomes(self, biome, size):
+        quadrant = random.randint(0, 3)
         biome_center = []
         if biome == "desert":
             biome = Colors.YELLOW2 + "[ ]" + Colors.END
-        biome_center = [random.randint(0, 40), random.randint(0, 40)]
+            quadrant = random.randint(0, 3)
+        if biome == "forest":
+            biome = Colors.GREEN + "[ ]" + Colors.END
+        if biome == "mountains":
+            biome = Colors.GREY + "[ ]" + Colors.END
+            quadrant = random.randint(0, 3)
+        if quadrant == 0:
+            biome_center = [random.randint(0 + size, 22 - size), random.randint(0 + size, 22 - size)]
+        elif quadrant == 1:
+            biome_center = [random.randint(0 + size, 20 - size), random.randint(18 + size, 40 - size)]
+        elif quadrant == 2:
+            biome_center = [random.randint(18 + size, 40 - size), random.randint(0 + size, 22 - size)]
+        elif quadrant == 3:
+            biome_center = [random.randint(18 + size, 40 - size), random.randint(18 + size, 40 - size)]
         print(biome_center)
-        while True:
-            if biome_center[0] - size//2 < 0 or biome_center[0] + size//2 > 40:
-                biome_center = [random.randint(0, 40), random.randint(0, 40)]
-            else:
-                pass
-            if biome_center[1] - size//2 < 0 or biome_center[1] + size//2 > 40:
-                biome_center = [random.randint(0, 40), random.randint(0, 40)]
-            else:
-                break
         for row in range(biome_center[0] - size//2, biome_center[0] + size//2):
             for col in range(biome_center[1] - size//2, biome_center[1] + size//2):
-                if self.grid[row][col] == "   ":
-                    self.grid[row][col] = biome
-                if self.grid[row][col] == self.tree:
-                    desert_tree = Colors.YELLOW2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
-                    self.grid[row][col] = desert_tree
-                if self.grid[row][col] == self.enemy:
-                    desert_enemy = Colors.YELLOW2 + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
-                    self.grid[row][col] = desert_enemy
+                    if self.grid[row][col] == "   ":
+                        self.grid[row][col] = biome
+                    if self.grid[row][col] == self.tree:
+                        desert_tree = Colors.YELLOW2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
+                        self.grid[row][col] = desert_tree
+                    if self.grid[row][col] == self.enemy:
+                        desert_enemy = Colors.YELLOW2 + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
+                        self.grid[row][col] = desert_enemy
+                    if self.grid[row][col] == self.player:
+                        desert_player = Colors.YELLOW2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
+                        self.grid[row][col] = desert_player
         # ISSUES TO FIX STILL 1. The biomes are affected by movement, ex. if you move north the biome will move as well
-        # General quality of life issues and color scheme for the content
+        # 2. Still havent figured out how to make sure the biomes aren't just squares 3. General quality of life issues
+        # and color scheme for the content
+
+    def generate_world(self):
+        for list in self.grid:
+            while '   ' in list:
+                self.generate_biome()
+                for i in range(len(self.grid)):
+                    for j in range(len(self.grid[i])):
+                        if self.grid[i][j] == '   ':
+                            self.grid[i][j] = self.grid[random.randint(0, len(self.grid) - 1)][random.randint(0, len(self.grid) - 1)]
+
+    def generate_biome(self):
+        for i in range(0, len(self.grid)//2):
+            for j in range(0, len(self.grid)//2):
+                if self.grid[i][j] != "   ":
+                    pass
+                else:
+                    self.generate_biomes("desert", random.randint(0, 7))
+                    self.generate_biomes("forest", random.randint(0, 7))
+                    self.generate_biomes("mountains", random.randint(0, 7))
 
 
 #
 loc = Location()
 loc.clear_save_file()
 loc.get_data()
-loc.create_location_grid(loc.visibility)
-loc.set_location()
+loc.create_location_grid(41)
 loc.check_empty_file()
-loc.generate_biomes("desert", 5)
-loc.generate_biomes("desert", 10)
-loc.generate_biomes("desert", 12)
-loc.generate_biomes("desert", 2)
+loc.generate_world()
 loc.print_location_grid()
-loc.set_boarder_approach_location()
+print("\n")
+loc.set_location()
+loc.print_player_grid()
 loc.location_boarders(200)
 while True:
     print(f"Currently at: ({loc.moves_RIGHTLEFT}, {loc.moves_UPDOWN})")
     loc.player_movement()
     loc.location_boarders(200)
     loc.save_grid()
-    loc.set_player_pos()
-    loc.print_location_grid()
+    loc.set_location()
+    loc.print_player_grid()
