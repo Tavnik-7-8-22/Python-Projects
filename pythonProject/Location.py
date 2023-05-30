@@ -15,7 +15,7 @@ class Location:
         self.out_of_vision = Colors.WHITE + "[ ]" + Colors.END
         self.grid = []
         self.location_data = ""
-        self.ZO_location = "Forest"
+        self.altitude = 0
         self.move_count = 9
         self.visibility = 5
         self.update_temp_var = self.empty_space
@@ -29,6 +29,7 @@ class Location:
         self.approach_grid_movement_UPDOWN = False
         self.approach_grid_movement_RIGHTLEFT = False
         self.set_location_runs = 0
+        self.quadrant_list = random.sample(range(4), 4)
         logging.debug('__init__ accessed')
 
     def assign_campaign_name(self, var, val):
@@ -58,15 +59,17 @@ class Location:
 
         """
         logging.debug('Unfinished function')
-        return self.ZO_location
+        return self.altitude
 
-    def change_location(self, new_location):
+    def change_altitude(self, direction):
         """
 
-        :param new_location:
+        :param direction:
         """
-        logging.debug('Unfinished function')
-        pass
+        if direction == "up":
+            self.altitude += 1
+        if direction == "down":
+            self.altitude -= 1
 
     def get_data(self):
         """
@@ -403,20 +406,22 @@ class Location:
             outfile.write(sf)
 
     def generate_biomes(self, biome, size):
-        quadrant = random.randint(0, 3)
+        quadrant_list = self.quadrant_list
+        print(quadrant_list)
         biome_center = []
         if biome == "wasteland":
             biome = Colors.RED2 + "[ ]" + Colors.END
-            quadrant = 0
+            quadrant = quadrant_list[0]
+            print(f"Desert quadrant = {quadrant_list[0]}")
         if biome == "desert":
             biome = Colors.YELLOW2 + "[ ]" + Colors.END
-            quadrant = 1  # random.randint(0, 3)
+            quadrant = quadrant_list[1]
         if biome == "forest":
             biome = Colors.GREEN + "[ ]" + Colors.END
-            quadrant = 2  # random.randint(0, 3)
+            quadrant = quadrant_list[2]
         if biome == "mountains":
             biome = Colors.GREY + "[ ]" + Colors.END
-            quadrant = 3  # random.randint(0, 3)
+            quadrant = quadrant_list[3]
         if quadrant == 0:
             biome_center = [random.randint(0 + size, 20 - size), random.randint(0 + size, 20 - size)]
         elif quadrant == 1:
@@ -425,12 +430,9 @@ class Location:
             biome_center = [random.randint(20 + size, 40 - size), random.randint(0 + size, 20 - size)]
         elif quadrant == 3:
             biome_center = [random.randint(20 + size, 40 - size), random.randint(20 + size, 40 - size)]
-        print(biome_center)
-        for row in range(biome_center[0] - size//2, biome_center[0] + size//2):
-            for col in range(biome_center[1] - size//2, biome_center[1] + size//2):
-                # if self.grid[row][col] == "   ":
-                #     self.grid[row][col] = biome
-                if quadrant == 0:
+        for row in range(biome_center[0] - size // 2, biome_center[0] + size // 2):
+            for col in range(biome_center[1] - size // 2, biome_center[1] + size // 2):
+                if quadrant == quadrant_list[0]:
                     self.grid[row][col] = biome
                     if self.grid[row][col] == self.tree:
                         wasteland_tree = Colors.RED2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.RED2 + "]" + Colors.END
@@ -441,7 +443,7 @@ class Location:
                     if self.grid[row][col] == self.player:
                         wasteland_player = Colors.RED2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.RED2 + "]" + Colors.END
                         self.grid[row][col] = wasteland_player
-                elif quadrant == 1:
+                elif quadrant == quadrant_list[1]:
                     self.grid[row][col] = biome
                     if self.grid[row][col] == self.tree:
                         desert_tree = Colors.YELLOW2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
@@ -452,7 +454,7 @@ class Location:
                     if self.grid[row][col] == self.player:
                         desert_player = Colors.YELLOW2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
                         self.grid[row][col] = desert_player
-                elif quadrant == 2:
+                elif quadrant == quadrant_list[2]:
                     self.grid[row][col] = biome
                     if self.grid[row][col] == self.tree:
                         forest_tree = Colors.GREEN + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.GREEN + "]" + Colors.END
@@ -463,7 +465,7 @@ class Location:
                     if self.grid[row][col] == self.player:
                         forest_player = Colors.GREEN + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.GREEN + "]" + Colors.END
                         self.grid[row][col] = forest_player
-                elif quadrant == 3:
+                elif quadrant == quadrant_list[3]:
                     self.grid[row][col] = biome
                     if self.grid[row][col] == self.tree:
                         mountains_tree = Colors.GREY + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.GREY + "]" + Colors.END
@@ -488,9 +490,6 @@ class Location:
     def generate_biome(self):
         for i in range(0, len(self.grid)//2):
             for j in range(0, len(self.grid)//2):
-                if self.grid[i][j] != "   ":
-                    pass
-                else:
                     self.generate_biomes("desert", random.randint(0, 10))
                     self.generate_biomes("forest", random.randint(0, 10))
                     self.generate_biomes("mountains", random.randint(0, 10))
@@ -503,8 +502,8 @@ loc.clear_save_file()
 loc.get_data()
 loc.create_location_grid(41)
 loc.check_empty_file()
-loc.randomize_grid("All")
 loc.generate_world()
+print("q1 = top left, q2 = top right, q3 = bottom left, q4 = bottom right")
 loc.print_location_grid()
 print("\n")
 loc.set_location()
