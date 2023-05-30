@@ -94,7 +94,6 @@ class Location:
             for j in range(s):
                 row.append(self.empty_space)
             self.grid.append(row)
-        self.randomize_grid("All")
 
     def print_location_grid(self):
         """
@@ -406,27 +405,44 @@ class Location:
     def generate_biomes(self, biome, size):
         quadrant = random.randint(0, 3)
         biome_center = []
+        if biome == "wasteland":
+            biome = Colors.RED2 + "[ ]" + Colors.END
+            quadrant = 0
         if biome == "desert":
             biome = Colors.YELLOW2 + "[ ]" + Colors.END
-            quadrant = random.randint(0, 3)
+            quadrant = 1  # random.randint(0, 3)
         if biome == "forest":
             biome = Colors.GREEN + "[ ]" + Colors.END
+            quadrant = 2  # random.randint(0, 3)
         if biome == "mountains":
             biome = Colors.GREY + "[ ]" + Colors.END
-            quadrant = random.randint(0, 3)
+            quadrant = 3  # random.randint(0, 3)
         if quadrant == 0:
-            biome_center = [random.randint(0 + size, 22 - size), random.randint(0 + size, 22 - size)]
+            biome_center = [random.randint(0 + size, 20 - size), random.randint(0 + size, 20 - size)]
         elif quadrant == 1:
-            biome_center = [random.randint(0 + size, 20 - size), random.randint(18 + size, 40 - size)]
+            biome_center = [random.randint(0 + size, 20 - size), random.randint(20 + size, 40 - size)]
         elif quadrant == 2:
-            biome_center = [random.randint(18 + size, 40 - size), random.randint(0 + size, 22 - size)]
+            biome_center = [random.randint(20 + size, 40 - size), random.randint(0 + size, 20 - size)]
         elif quadrant == 3:
-            biome_center = [random.randint(18 + size, 40 - size), random.randint(18 + size, 40 - size)]
+            biome_center = [random.randint(20 + size, 40 - size), random.randint(20 + size, 40 - size)]
         print(biome_center)
         for row in range(biome_center[0] - size//2, biome_center[0] + size//2):
             for col in range(biome_center[1] - size//2, biome_center[1] + size//2):
-                    if self.grid[row][col] == "   ":
-                        self.grid[row][col] = biome
+                # if self.grid[row][col] == "   ":
+                #     self.grid[row][col] = biome
+                if quadrant == 0:
+                    self.grid[row][col] = biome
+                    if self.grid[row][col] == self.tree:
+                        wasteland_tree = Colors.RED2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.RED2 + "]" + Colors.END
+                        self.grid[row][col] = wasteland_tree
+                    if self.grid[row][col] == self.enemy:
+                        wasteland_enemy = Colors.RED2 + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.RED2 + "]" + Colors.END
+                        self.grid[row][col] = wasteland_enemy
+                    if self.grid[row][col] == self.player:
+                        wasteland_player = Colors.RED2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.RED2 + "]" + Colors.END
+                        self.grid[row][col] = wasteland_player
+                elif quadrant == 1:
+                    self.grid[row][col] = biome
                     if self.grid[row][col] == self.tree:
                         desert_tree = Colors.YELLOW2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
                         self.grid[row][col] = desert_tree
@@ -436,13 +452,33 @@ class Location:
                     if self.grid[row][col] == self.player:
                         desert_player = Colors.YELLOW2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
                         self.grid[row][col] = desert_player
-        # ISSUES TO FIX STILL 1. The biomes are affected by movement, ex. if you move north the biome will move as well
-        # 2. Still havent figured out how to make sure the biomes aren't just squares 3. General quality of life issues
-        # and color scheme for the content
+                elif quadrant == 2:
+                    self.grid[row][col] = biome
+                    if self.grid[row][col] == self.tree:
+                        forest_tree = Colors.GREEN + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.GREEN + "]" + Colors.END
+                        self.grid[row][col] = forest_tree
+                    if self.grid[row][col] == self.enemy:
+                        forest_enemy = Colors.GREEN + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.GREEN + "]" + Colors.END
+                        self.grid[row][col] = forest_enemy
+                    if self.grid[row][col] == self.player:
+                        forest_player = Colors.GREEN + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.GREEN + "]" + Colors.END
+                        self.grid[row][col] = forest_player
+                elif quadrant == 3:
+                    self.grid[row][col] = biome
+                    if self.grid[row][col] == self.tree:
+                        mountains_tree = Colors.GREY + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.GREY + "]" + Colors.END
+                        self.grid[row][col] = mountains_tree
+                    if self.grid[row][col] == self.enemy:
+                        mountains_enemy = Colors.GREY + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.GREY + "]" + Colors.END
+                        self.grid[row][col] = mountains_enemy
+                    if self.grid[row][col] == self.player:
+                        mountains_player = Colors.GREY + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.GREY + "]" + Colors.END
+                        self.grid[row][col] = mountains_player
+        # ISSUES TO FIX STILL 1. Population of random 'objects' is broken, 2. quadrant 0 seems to just not work
 
     def generate_world(self):
-        for list in self.grid:
-            while '   ' in list:
+        for l in self.grid:
+            while '   ' in l:
                 self.generate_biome()
                 for i in range(len(self.grid)):
                     for j in range(len(self.grid[i])):
@@ -455,9 +491,10 @@ class Location:
                 if self.grid[i][j] != "   ":
                     pass
                 else:
-                    self.generate_biomes("desert", random.randint(0, 7))
-                    self.generate_biomes("forest", random.randint(0, 7))
-                    self.generate_biomes("mountains", random.randint(0, 7))
+                    self.generate_biomes("desert", random.randint(0, 10))
+                    self.generate_biomes("forest", random.randint(0, 10))
+                    self.generate_biomes("mountains", random.randint(0, 10))
+                    self.generate_biomes("wasteland", random.randint(0, 10))
 
 
 #
@@ -466,6 +503,7 @@ loc.clear_save_file()
 loc.get_data()
 loc.create_location_grid(41)
 loc.check_empty_file()
+loc.randomize_grid("All")
 loc.generate_world()
 loc.print_location_grid()
 print("\n")
