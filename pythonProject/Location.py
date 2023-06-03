@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.DEBUG, filename='Location-debug.log')
 class Location:
     def __init__(self):
         self.player = Colors.BLUE + "@" + Colors.END
-        self.empty_space = "   "
+        self.empty_space = " "
         self.enemy = Colors.RED + "E" + Colors.END
         self.tree = Colors.GREEN + "T" + Colors.END
         self.entrance = Colors.WHITE + "[E]" + Colors.END
@@ -32,6 +32,7 @@ class Location:
         self.approach_grid_movement_RIGHTLEFT = False
         self.set_location_runs = 0
         self.quadrant_list = random.sample(range(4), 4)
+        self.biome_pos = [0, 0, 0, 0]
         logging.debug('__init__ accessed')
 
     def assign_campaign_name(self, var, val):
@@ -86,7 +87,7 @@ class Location:
         location_info = json.loads(location_info_raw)
         self.location_data = location_info
 
-    def create_location_grid(self, s):
+    def create_location_grids(self, s):
         """
         Creates a w by h grid using for loops and appends self.empty_space ([ ]) to each grid space
         :param s: The size of the grid
@@ -99,19 +100,27 @@ class Location:
             for j in range(s):
                 row.append(self.empty_space)
             self.grid.append(row)
+        for i in range(s):
+            row = []
+            for j in range(s):
+                row.append(self.empty_space)
             self.color_grid.append(row)
+        for i in range(s):
+            row = []
+            for j in range(s):
+                row.append(self.empty_space)
             self.content_grid.append(row)
 
-    def print_location_grid(self):
+    def print_location_grid(self, grid):
         """
         Prints out the grid created bby self.create_location_grid with any changes applied by later functions
         """
         logging.debug('print_location_grid called')
         logging.debug('Printing out the grid')
         logging.debug('Called at the beginning of Location run and end of every loop')
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[i])):
-                print(self.grid[i][j], end=' ')
+        for i in range(len(grid)):
+            for j in range(len(grid[i])):
+                print(grid[i][j], end=' ')
             print()
 
     def print_player_grid(self):
@@ -319,59 +328,67 @@ class Location:
         logging.debug('Called in Location loop')
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                if self.content_grid[i][j] == "   ":
+                if self.content_grid[i][j] == " ":
                     self.grid[i][j] = self.color_grid[i][j]
                 else:
-                    self.grid[i][j] = self.content_grid[i][j]
-        self.color_code_grid()
+                    pass
+                    # self.color_code_grid()
+
+    def identify_quadrants(self):
+        for n in range(0, 4):
+            if self.quadrant_list[0] == n:
+                self.biome_pos[0] = {"wasteland": n}
+            elif self.quadrant_list[1] == n:
+                self.biome_pos[1] = {"desert": n}
+            elif self.quadrant_list[2] == n:
+                self.biome_pos[2] = {"forest": n}
+            elif self.quadrant_list[3] == n:
+                self.biome_pos[3] = {"mountains": n}
 
     def color_code_grid(self):
+        # i = position on grid, biome = position in list
+        self.identify_quadrants()
+        biome_colors = []
+        for n in range(0, 4):
+            for i in self.biome_pos:
+                for j in i.values():
+                    if j == n:
+                        biome = self.biome_pos.index(self.biome_pos[j])
+                        if biome == 0:
+                            biome_colors.append(Colors.RED2)
+                        if biome == 1:
+                            biome_colors.append(Colors.YELLOW2)
+                        if biome == 2:
+                            biome_colors.append(Colors.GREEN)
+                        if biome == 3:
+                            biome_colors.append(Colors.GREY)
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                if self.grid[i][j] == self.tree:
-                    if self.grid[i] in range(0, 20):
-                        if self.grid[j] in range(20, 40):
-                            self.grid[i][j] = Colors.YELLOW2 + "[" + self.tree + "]" + Colors.END
-                        else:
-                            self.grid[i][j] = Colors.RED2 + "[" + self.tree + "]" + Colors.END
-                    elif self.grid[i] in range(20, 40):
-                        if self.grid in range(0, 20):
-                            self.grid[i][j] = Colors.GREEN + "[" + self.tree + "]" + Colors.END
-                        else:
-                            self.grid[i][j] = Colors.GREY + "[" + self.tree + "]" + Colors.END
-                if self.grid[i][j] == self.enemy:
-                    if self.grid[i] in range(0, 20):
-                        if self.grid[j] in range(20, 40):
-                            self.grid[i][j] = Colors.YELLOW2 + "[" + self.enemy + "]" + Colors.END
-                        else:
-                            self.grid[i][j] = Colors.RED2 + "[" + self.enemy + "]" + Colors.END
-                    elif self.grid[i] in range(20, 40):
-                        if self.grid in range(0, 20):
-                            self.grid[i][j] = Colors.GREEN + "[" + self.enemy + "]" + Colors.END
-                        else:
-                            self.grid[i][j] = Colors.GREY + "[" + self.enemy + "]" + Colors.END
-                if self.grid[i][j] == self.player:
-                    if self.grid[i] in range(0, 20):
-                        if self.grid[j] in range(20, 40):
-                            self.grid[i][j] = Colors.YELLOW2 + "[" + self.player + "]" + Colors.END
-                        else:
-                            self.grid[i][j] = Colors.RED2 + "[" + self.player + "]" + Colors.END
-                    elif self.grid[i] in range(20, 40):
-                        if self.grid in range(0, 20):
-                            self.grid[i][j] = Colors.GREEN + "[" + self.player + "]" + Colors.END
-                        else:
-                            self.grid[i][j] = Colors.GREY + "[" + self.playerz + "]" + Colors.END
-
+                if self.grid.index(self.grid[i]) in range(0, 20):
+                    if self.grid.index(self.grid[j]) in range(20, 40):
+                        self.grid[i][
+                            j] = biome_colors[0] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[0] + "]" + Colors.END
+                    else:
+                        self.grid[
+                            i][
+                            j] = biome_colors[1] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[1] + "]" + Colors.END
+                else:
+                    if self.grid.index(self.grid[j]) in range(0, 20):
+                        self.grid[i][
+                            j] = biome_colors[2] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[2] + "]" + Colors.END
+                    else:
+                        self.grid[i][j] = biome_colors[3] + "[" + Colors.END + self.content_grid[i][
+                            j] + biome_colors[3] + "]" + Colors.END
 
     def move_north(self):
-            """
-            Triggers either the self.update and self.randomize _grid_north() and moves
-            """
-            logging.debug('Move_north called')
-            logging.debug("ran player movement")
-            self.update_grid("North")
-            self.randomize_grid("North")
-            self.moves_UPDOWN += 1
+        """
+        Triggers either the self.update and self.randomize _grid_north() and moves
+        """
+        logging.debug('Move_north called')
+        logging.debug("ran player movement")
+        self.update_grid("North")
+        self.randomize_grid("North")
+        self.moves_UPDOWN += 1
 
     def move_east(self):
         logging.debug('Move_east called')
@@ -471,93 +488,46 @@ class Location:
             biome_center = [random.randint(20 + size, 40 - size), random.randint(0 + size, 20 - size)]
         elif quadrant == 3:
             biome_center = [random.randint(20 + size, 40 - size), random.randint(20 + size, 40 - size)]
-        wasteland_tree = Colors.RED2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.RED2 + "]" + Colors.END
-        wasteland_enemy = Colors.RED2 + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.RED2 + "]" + Colors.END
-        wasteland_player = Colors.RED2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.RED2 + "]" + Colors.END
-        desert_tree = Colors.YELLOW2 + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
-        desert_enemy = Colors.YELLOW2 + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
-        desert_player = Colors.YELLOW2 + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.YELLOW2 + "]" + Colors.END
-        forest_tree = Colors.GREEN + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.GREEN + "]" + Colors.END
-        forest_enemy = Colors.GREEN + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.GREEN + "]" + Colors.END
-        forest_player = Colors.GREEN + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.GREEN + "]" + Colors.END
-        mountains_tree = Colors.GREY + "[" + Colors.END + Colors.GREEN + "T" + Colors.END + Colors.GREY + "]" + Colors.END
-        mountains_enemy = Colors.GREY + "[" + Colors.END + Colors.RED + "E" + Colors.END + Colors.GREY + "]" + Colors.END
-        mountains_player = Colors.GREY + "[" + Colors.END + Colors.BLUE + "@" + Colors.END + Colors.GREY + "]" + Colors.END
         for row in range(biome_center[0] - size // 2, biome_center[0] + size // 2):
             for col in range(biome_center[1] - size // 2, biome_center[1] + size // 2):
                 if quadrant == self.quadrant_list[0]:
                     self.color_grid[row][col] = biome
-                    if self.color_grid[row][col] == self.tree or self.color_grid[row][col] == wasteland_tree:
-                        self.color_grid[row][col] = wasteland_tree
-                    if self.color_grid[row][col] == self.enemy or self.color_grid[row][col] == wasteland_enemy:
-                        self.color_grid[row][col] = wasteland_enemy
-                    if self.color_grid[row][col] == self.player or self.color_grid[row][col] == wasteland_player:
-                        self.color_grid[row][col] = wasteland_player
                 elif quadrant == self.quadrant_list[1]:
                     self.color_grid[row][col] = biome
-                    if self.color_grid[row][col] == self.tree or self.color_grid[row][col] == desert_tree:
-                        self.color_grid[row][col] = desert_tree
-                    if self.color_grid[row][col] == self.enemy or self.color_grid[row][col] == desert_enemy:
-                        self.color_grid[row][col] = desert_enemy
-                    if self.color_grid[row][col] == self.player or self.color_grid[row][col] == desert_player:
-                        self.color_grid[row][col] = desert_player
                 elif quadrant == self.quadrant_list[2]:
                     self.color_grid[row][col] = biome
-                    if self.color_grid[row][col] == self.tree or self.color_grid[row][col] == forest_tree:
-                        self.color_grid[row][col] = forest_tree
-                    if self.color_grid[row][col] == self.enemy or self.color_grid[row][col] == forest_enemy:
-                        self.color_grid[row][col] = forest_enemy
-                    if self.color_grid[row][col] == self.player or self.color_grid[row][col] == forest_player:
-                        self.color_grid[row][col] = forest_player
                 elif quadrant == self.quadrant_list[3]:
                     self.color_grid[row][col] = biome
-                    if self.color_grid[row][col] == self.tree or self.color_grid[row][col] == mountains_tree:
-                        self.color_grid[row][col] = mountains_tree
-                    if self.color_grid[row][col] == self.enemy or self.color_grid[row][col] == mountains_enemy:
-                        self.color_grid[row][col] = mountains_enemy
-                    if self.color_grid[row][col] == self.player or self.color_grid[row][col] == mountains_player:
-                        self.color_grid[row][col] = mountains_player
-        # ISSUES TO FIX STILL 1. Population of random 'objects' is broken, 2. quadrant 0 seems to just not work
 
     def generate_world(self):
         for lists in self.color_grid:
-            while '   ' in lists:
+            while ' ' in lists:
                 self.generate_biome()
                 for i in range(len(self.color_grid)):
                     for j in range(len(self.color_grid[i])):
-                        while self.color_grid[i][j] == '   ':
+                        while self.color_grid[i][j] == ' ':
                             self.color_grid[i][j] = self.color_grid[random.randint(0, len(self.color_grid) - 1)][random.randint(0, len(self.color_grid) - 1)]
+
 
     def generate_biome(self):
         for i in range(0, len(self.color_grid)//2):
             for j in range(0, len(self.color_grid)//2):
-                    self.generate_biomes("desert", random.randint(0, 10))
-                    self.generate_biomes("forest", random.randint(0, 10))
-                    self.generate_biomes("mountains", random.randint(0, 10))
-                    self.generate_biomes("wasteland", random.randint(0, 10))
+                self.generate_biomes("desert", random.randint(0, 10))
+                self.generate_biomes("forest", random.randint(0, 10))
+                self.generate_biomes("mountains", random.randint(0, 10))
+                self.generate_biomes("wasteland", random.randint(0, 10))
 
 
 #
 loc = Location()
 loc.clear_save_file()
 loc.get_data()
-loc.create_location_grid(41)
-print("Content grid")
-print(loc.content_grid)
-print("Color grid")
-print(loc.color_grid)
+loc.create_location_grids(41)
 loc.randomize_grid("All")
-print("Content grid")
-print(loc.content_grid)
-print("Color grid")
-print(loc.color_grid)
 loc.generate_world()
-print("Content grid")
-print(loc.content_grid)
-print("Color grid")
-print(loc.color_grid)
-print("q1 = top left, q2 = top right, q3 = bottom left, q4 = bottom right")
+loc.identify_quadrants()
 loc.combine_grids()
+loc.print_location_grid(loc.grid)
 print("\n")
 loc.check_empty_file()
 loc.set_location()
