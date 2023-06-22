@@ -70,7 +70,7 @@ class GameControl:
     def check_empty_file(self):
         with open("JSON files/SavedCharacterData.json", 'r') as read_obj:
             one_char = read_obj.read(1)
-            if not one_char:
+            if one_char == '0' or not one_char:
                 data = [{"blank_beginner_save": self.player.__dict__}]
                 sf = json.dumps(data, indent=4, separators=(',', ': '))
                 with open('JSON files/SavedCharacterData.json', "w") as outfile:
@@ -161,21 +161,27 @@ class GameControl:
         print()
 
     def start_location(self):
+        self.location.clear_save_file()
         self.location.get_data()
-        self.location.create_location_grid(self.location.visibility, self.location.visibility)
-        self.location.randomize_grid()
-        self.location.set_location()
-        self.location.location_boarders(5)
+        self.location.create_location_grids(41)
+        self.location.randomize_grid("All")
+        self.location.generate_world()
+        self.location.combine_grids()
+        self.location.print_location_grid(self.location.grid)
+        print("\n")
         self.location.check_empty_file()
+        self.location.set_location()
+        self.location.print_player_grid()
+        self.location.location_boarders(200)
 
     def run_location(self):
         # Dev room entry code is dev-7-8-22
+        print(f"Currently at: ({self.location.moves_RIGHTLEFT}, {self.location.moves_UPDOWN})")
         self.location.player_movement()
-        self.location.revert_grid()
-        self.location.save_grid()
-        self.location.location_boarders(5)
-        self.location.print_location_grid()
-        
+        self.location.location_boarders(200)
+        self.location.set_location()
+        self.location.print_player_grid()
+
     def start_game(self):
         self.check_empty_file()
         print("Welcome to: \"GAME NAME\"")
@@ -194,7 +200,7 @@ class GameControl:
             self.ask_roll_again()
         print("Remember saves aren't automatic, if you want to save do it manually!")
         print("\n\n\n")
-        self.location.print_location_grid()
+        self.location.print_location_grid(self.location.grid)
 
 
 gc = GameControl()

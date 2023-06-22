@@ -12,7 +12,7 @@ class BaseCharacter:
         self.MAX_HEALTH = 0
         self.heritage = ""
         self.inventory = []
-        self.possessive_nickname = self.name + 's'
+        self.possessive_nickname = self.name + '\'s'
         self.other_nickname = self.name
         self.attributes = {"name": name, "health": 0, "strength": 0, "speed": 0, "xp": 0, "is_alive": True,
                            "MAX_HEALTH": 0, "heritage": '', "inventory": [], "possessive_nickname": self.name + 's',
@@ -20,6 +20,7 @@ class BaseCharacter:
 
     def change__init__(self, var, val):
         setattr(self, var, val)
+        print(self.name)
 
     def set_dead(self):
         self.is_alive = False

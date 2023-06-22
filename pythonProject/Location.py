@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.DEBUG, filename='Location-debug.log')
 
 class Location:
     def __init__(self):
-        self.player = Colors.BLUE + "@" + Colors.END
+        self.player = Colors.BLUE + " @ " + Colors.END
         self.empty_space = " "
         self.enemy = Colors.RED + "E" + Colors.END
         self.tree = Colors.GREEN + "T" + Colors.END
@@ -331,54 +331,46 @@ class Location:
                 if self.content_grid[i][j] == " ":
                     self.grid[i][j] = self.color_grid[i][j]
                 else:
-                    pass
-                    # self.color_code_grid()
-
-    def identify_quadrants(self):
-        for n in range(0, 4):
-            if self.quadrant_list[0] == n:
-                self.biome_pos[0] = {"wasteland": n}
-            elif self.quadrant_list[1] == n:
-                self.biome_pos[1] = {"desert": n}
-            elif self.quadrant_list[2] == n:
-                self.biome_pos[2] = {"forest": n}
-            elif self.quadrant_list[3] == n:
-                self.biome_pos[3] = {"mountains": n}
+                    self.color_code_grid()
 
     def color_code_grid(self):
-        # i = position on grid, biome = position in list
-        self.identify_quadrants()
         biome_colors = []
         for n in range(0, 4):
-            for i in self.biome_pos:
-                for j in i.values():
-                    if j == n:
-                        biome = self.biome_pos.index(self.biome_pos[j])
-                        if biome == 0:
-                            biome_colors.append(Colors.RED2)
-                        if biome == 1:
-                            biome_colors.append(Colors.YELLOW2)
-                        if biome == 2:
-                            biome_colors.append(Colors.GREEN)
-                        if biome == 3:
-                            biome_colors.append(Colors.GREY)
+            for i in self.quadrant_list:
+                biome = self.quadrant_list.index(self.quadrant_list[i])
+                if biome == 0:
+                    biome_colors.append(Colors.RED2)
+                if biome == 1:
+                    biome_colors.append(Colors.YELLOW2)
+                if biome == 2:
+                    biome_colors.append(Colors.GREEN)
+                if biome == 3:
+                    biome_colors.append(Colors.GREY)
+        content = [self.tree, self.enemy, self.player]
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                if self.grid.index(self.grid[i]) in range(0, 20):
-                    if self.grid.index(self.grid[j]) in range(20, 40):
-                        self.grid[i][
-                            j] = biome_colors[0] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[0] + "]" + Colors.END
+                if self.grid.index(self.grid[i]) in range(0, 21):
+                    if self.grid.index(self.grid[j]) in range(0, 21):
+                        if self.content_grid[i][j] in content:
+                            self.grid[i][
+                                j] = biome_colors[0] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[0] + "]" + Colors.END
                     else:
-                        self.grid[
-                            i][
-                            j] = biome_colors[1] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[1] + "]" + Colors.END
+                        if self.content_grid[i][j] in content:
+                            self.grid[
+                                i][
+                                j] = biome_colors[1] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[1] + "]" + Colors.END
                 else:
-                    if self.grid.index(self.grid[j]) in range(0, 20):
-                        self.grid[i][
-                            j] = biome_colors[2] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[2] + "]" + Colors.END
+                    if self.grid.index(self.grid[j]) in range(0, 21):
+                        if self.content_grid[i][j] in content:
+                            self.grid[i][
+                                j] = biome_colors[2] + "[" + Colors.END + self.content_grid[i][j] + biome_colors[2] + "]" + Colors.END
                     else:
-                        self.grid[i][j] = biome_colors[3] + "[" + Colors.END + self.content_grid[i][
-                            j] + biome_colors[3] + "]" + Colors.END
+                        if self.content_grid[i][j] in content:
+                            self.grid[i][j] = biome_colors[3] + "[" + Colors.END + self.content_grid[i][
+                                j] + biome_colors[3] + "]" + Colors.END
+
+    # def color_code_player(self):
+
 
     def move_north(self):
         """
@@ -525,7 +517,6 @@ loc.get_data()
 loc.create_location_grids(41)
 loc.randomize_grid("All")
 loc.generate_world()
-loc.identify_quadrants()
 loc.combine_grids()
 loc.print_location_grid(loc.grid)
 print("\n")
